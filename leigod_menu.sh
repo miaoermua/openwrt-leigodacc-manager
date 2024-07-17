@@ -9,6 +9,7 @@ leigod_menu() {
     echo "4. 禁用/启用"
     echo "5. 帮助"
     echo "0. 退出"
+    echo ""
     echo "选择数字功能项并回车执行: "
 }
 
@@ -65,7 +66,7 @@ install_leigodacc() {
 }
 
 uninstall_leigodacc() {
-    echo "确定卸载？选择数字并回车 ([1] 确定 / [2] 取消) "
+    echo "确定卸载? 选择数字并回车 10s 后自动卸载 ([1] 确定 / [2] 取消) "
     read -t 10 choice
     case $choice in
         1)
