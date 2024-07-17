@@ -78,8 +78,13 @@ uninstall_leigodacc() {
             ;;
     esac
 
-    chmod +x /usr/sbin/leigod/leigod_uninstall.sh
-    /usr/sbin/leigod/leigod_uninstall.sh
+    # chmod +x /usr/sbin/leigod/leigod_uninstall.sh
+    # /usr/sbin/leigod/leigod_uninstall.sh
+    
+    rm /etc/config/accelerator
+    /etc/init.d/acc disable
+    /etc/init.d/acc stop
+    rm /etc/init.d/acc
     rm /usr/lib/lua/luci/controller/acc.lua
     rm -rf /usr/lib/lua/luci/model/cbi/leigod
     rm -rf /usr/lib/lua/luci/view/leigod
