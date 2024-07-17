@@ -89,6 +89,7 @@ uninstall_leigodacc() {
     rm -rf /usr/lib/lua/luci/model/cbi/leigod
     rm -rf /usr/lib/lua/luci/view/leigod
     rm /usr/lib/lua/luci/i18n/acc.zh-cn.lmo
+    rm -rf /tmp/luci-*
 }
 
 reinstall_leigodacc() {
