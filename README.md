@@ -27,14 +27,16 @@ Collected errors:
  * opkg_install_cmd: Cannot install package kmod-netem.
 ```
 
-非必要组件
+[Cattools](https://github.com/miaoermua/cattools) 是 [CatWrt](https://github.com/miaoermua/CatWrt) 专属工具箱可以实现软件源配置，CatWrt 必须启用后才能安装组件
 
-```
-kmod-ipt-tproxy
-kmod-netem
+```shell
+[ERROR] 请先配置软件源
+Cattools - Apply_repo
 ```
 
-必要组件
+## 组件
+
+必要组件（影响插件运行）
 
 ```
 libpcap
@@ -45,4 +47,11 @@ tc-full
 kmod-ipt-ipset
 ipset
 kmod-tun
+```
+
+非必要组件（影响游戏内 PING 值）
+
+```
+kmod-ipt-tproxy
+kmod-netem
 ```
