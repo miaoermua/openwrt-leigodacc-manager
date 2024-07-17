@@ -59,6 +59,8 @@ install_leigodacc() {
         fi
     done
 
+    echo "[INFO] The following is the execution content of the official scrips /// 下面是官方脚本输出内容,如遇到问题请截图反馈官方"
+    
     cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
 }
 
