@@ -16,3 +16,33 @@ sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-m
 > 此方法安装的不受 opkg 包管理器管理，无法通过 opkg 卸载雷神插件
 
 该方法基于雷神加速器官方教程编写，管理程序开源不涉及商业竞争版权由 ©️ 雷神（武汉）网络技术有限公司 所有
+
+## 已知问题
+
+对应的包不存在，换支持的固件
+
+```shell
+Unknown package 'kmod-netem'.
+Collected errors:
+ * opkg_install_cmd: Cannot install package kmod-netem.
+```
+
+非必要组件
+
+```
+kmod-ipt-tproxy
+kmod-netem
+```
+
+必要组件
+
+```
+libpcap
+iptables
+kmod-ipt-nat
+iptables-mod-tproxy
+tc-full
+kmod-ipt-ipset
+ipset
+kmod-tun
+```
