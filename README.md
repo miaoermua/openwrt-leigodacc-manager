@@ -19,15 +19,15 @@ sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-m
 
 ## 已知问题
 
-对应的包不存在，换支持的固件
+对应 pkg 包不存在，请换支持的固件彻底解决，如果是非必要组件可以不安装自适应。
 
 ```shell
-Unknown package 'kmod-netem'.
+Unknown package 'pkg'.
 Collected errors:
- * opkg_install_cmd: Cannot install package kmod-netem.
+ * opkg_install_cmd: Cannot install package pkg.
 ```
 
-[Cattools](https://github.com/miaoermua/cattools) 是 [CatWrt](https://github.com/miaoermua/CatWrt) 专属工具箱可以实现软件源配置，CatWrt 必须启用后才能安装组件
+[Cattools](https://github.com/miaoermua/cattools) 是 [CatWrt](https://github.com/miaoermua/CatWrt) 专属工具箱可以实现软件源配置，CatWrt 必须启用后才能安装组件。
 
 ```shell
 [ERROR] 请先配置软件源
