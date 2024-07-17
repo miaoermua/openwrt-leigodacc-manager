@@ -83,14 +83,12 @@ uninstall_leigodacc() {
     rm /usr/lib/lua/luci/i18n/acc.zh-cn.lmo
 }
 
-# 重装函数
 reinstall_leigodacc() {
     uninstall_leigodacc
     install_leigodacc
 }
 
-# 禁用/启用服务函数
-toggle_service() {
+service() {
     if /etc/init.d/acc enabled; then
         /etc/init.d/acc disable
         /etc/init.d/acc stop
@@ -100,8 +98,7 @@ toggle_service() {
     fi
 }
 
-# 帮助函数
-show_help() {
+help() {
     echo "帮助信息："
     echo "1. 安装：安装 LeigodAcc"
     echo "2. 卸载：卸载 LeigodAcc"
@@ -126,16 +123,16 @@ while true; do
             reinstall_leigodacc
             ;;
         4)
-            toggle_service
+            service
             ;;
         5)
-            show_help
+            help
             ;;
         0)
             exit 0
             ;;
         *)
-            echo "无效的选项，请重新输入"
+            echo "[ERROR] 无效的选项，请重新输入"
             ;;
     esac
 done
