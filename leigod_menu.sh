@@ -1,5 +1,22 @@
 #!/bin/sh
 
+# Check ROOT & OpenWrt
+if [ $(id -u) != "0" ]; then
+    echo "Error: You must be root to run this script, please use root user"
+    exit 1
+fi
+
+if [ -e /etc/asus_release ]; then
+    echo "TONY 别肘!我是说出台词我爱 BCM!"
+    exit 0
+fi
+
+openwrt_release=$(cat /etc/openwrt_release)
+if ! grep -q "OpenWrt" <<<"$openwrt_release"; then
+    echo "Your system is not supported!"
+    exit 1
+fi
+
 leigod_menu() {
     echo "OpenWrt LeigodAcc Manager"
     echo ""
@@ -7,13 +24,31 @@ leigod_menu() {
     echo "2. 卸载"
     echo "3. 重装/更新"
     echo "4. 禁用/启用 雷神服务"
-    echo "5. 帮助"
+    echo "5. 切换运行模式 (TUN/Tproxy)"
+    echo "6. 帮助"
     echo "0. 退出"
     echo ""
     echo "选择数字功能项并回车执行: "
 }
 
 install_leigodacc() {
+    if [ -d /usr/sbin/leigod ]; then
+        echo "检测到已经安装 LeigodAcc"
+        echo "选择 [1] 继续安装 / [2] 取消"
+        read choice
+        case $choice in
+            1)
+                ;;
+            2)
+                return
+                ;;
+            *)
+                echo "[ERROR] 无效的选项，请重新输入"
+                return
+                ;;
+        esac
+    fi
+
     if [ -f /etc/catwrt_release ]; then
         if ! grep -q -E "catwrt|repo.miaoer.xyz" /etc/opkg/distfeeds.conf && ! ip a | grep -q -E "192\.168\.[0-9]+\.[0-9]+|10\.[0-9]+\.[0-9]+\.[0-9]+|172\.1[6-9]\.[0-9]+\.[0-9]+|172\.2[0-9]+\.[0-9]+|172\.3[0-1]\.[0-9]+\.[0-9]+"; then
             echo "[ERROR] 请先配置软件源"
@@ -60,12 +95,17 @@ install_leigodacc() {
         fi
     done
 
-    echo "[INFO] The following is the execution content of the official scrips /// 下面是官方脚本输出内容,如遇到问题请截图反馈官方"
+    echo "[INFO] 下面是官方脚本输出内容,如遇到问题请截图反馈官方"
     
     cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
 }
 
 uninstall_leigodacc() {
+    if [ ! -d /usr/sbin/leigod ]; then
+        echo "LeigodAcc 未安装"
+        return
+    fi
+
     echo "确定卸载? 选择数字并回车 10s 后自动卸载 ([1] 确定 / [2] 取消) "
     read -t 10 choice
     case $choice in
@@ -77,9 +117,6 @@ uninstall_leigodacc() {
         *)
             ;;
     esac
-
-    # chmod +x /usr/sbin/leigod/leigod_uninstall.sh
-    # /usr/sbin/leigod/leigod_uninstall.sh
     
     rm /etc/config/accelerator
     /etc/init.d/acc disable
@@ -88,6 +125,7 @@ uninstall_leigodacc() {
     rm /usr/lib/lua/luci/controller/acc.lua
     rm -rf /usr/lib/lua/luci/model/cbi/leigod
     rm -rf /usr/lib/lua/luci/view/leigod
+    rm -rf /usr/sbin/leigod
     rm /usr/lib/lua/luci/i18n/acc.zh-cn.lmo
     rm -rf /tmp/luci-*
 }
@@ -107,13 +145,30 @@ service() {
     fi
 }
 
+switch_mode() {
+    grep -q -- "--mode tun" /etc/init.d/acc
+    if [ $? -eq 0 ]; then
+        current_mode="tun"
+    else
+        current_mode="tproxy"
+    fi
+    if [ "$current_mode" = "tproxy" ]; then
+        sed -i "s/${args}/--mode tun/" /etc/init.d/acc
+    else
+        sed -i "s/--mode tun/${args}/" /etc/init.d/acc
+    fi
+    /etc/init.d/acc stop
+    /etc/init.d/acc start
+}
+
 help() {
     echo "帮助信息："
     echo "1. 安装：安装 LeigodAcc"
     echo "2. 卸载：卸载 LeigodAcc"
     echo "3. 重装：重装 LeigodAcc"
     echo "4. 禁用/启用：禁用或启用 LeigodAcc 服务"
-    echo "5. 帮助：显示帮助信息"
+    echo "5. 切换运行模式：在 TUN 和 Tproxy 模式之间切换"
+    echo "6. 帮助：显示帮助信息"
     echo "0. 退出：退出脚本"
 }
 
@@ -135,6 +190,9 @@ while true; do
             service
             ;;
         5)
+            switch_mode
+            ;;
+        6)
             help
             ;;
         0)
