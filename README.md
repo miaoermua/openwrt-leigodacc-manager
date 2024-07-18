@@ -1,11 +1,12 @@
 # openwrt-leigodacc-manager
 
-一个基于 sh 管理雷神插件的快捷工具
+一个基于 shell 脚本管理雷神插件的快捷工具，适用于 OpenWrt 系统
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
 - [x] 自动安装雷神依赖
+- [x] 支持修改雷神加速器为 TUN 模式，默认为 Tproxy
 - [ ] 不支持和 Proxy 共存(同时启用)
-- [ ] 不支持修改雷神加速器为 TUN 模式，默认为 Tproxy
+
 
 执行下列命令 **使用 Leigod Acc Manager**
 
