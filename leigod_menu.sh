@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Check ROOT & OpenWrt
-if [ $(id -u) != "0" ]; then
+if [ "$(id -u)" != "0" ]; then
     echo "Error: You must be root to run this script, please use root user"
     exit 1
 fi
@@ -97,11 +97,16 @@ install_leigodacc() {
     echo "[INFO] 下面是官方脚本输出内容,如遇到问题请截图反馈官方"
     
     cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
+
+    if [ ! -d /usr/sbin/leigod ]; then
+        echo "[ERROR] LeigodAcc 未安装，可能是设备存储已满!"
+        return
+    fi
 }
 
 uninstall_leigodacc() {
     if [ ! -d /usr/sbin/leigod ]; then
-        echo "LeigodAcc 未安装"
+        echo "[ERROR] LeigodAcc 未安装"
         return
     fi
 
@@ -135,16 +140,26 @@ reinstall_leigodacc() {
 }
 
 service() {
+    if [ ! -f /etc/init.d/acc ]; then
+        echo "[ERROR] 雷神服务文件不存在"
+        return
+    fi
+
     if /etc/init.d/acc enabled; then
         /etc/init.d/acc disable
         /etc/init.d/acc stop
     else
-        /etc/init.d/acc enable
-        /etc/init.d/acc start
+        /etc.init.d/acc enable
+        /etc.init.d/acc start
     fi
 }
 
 switch_mode() {
+    if [ ! -f /etc/init.d/acc ]; then
+        echo "[ERROR] 雷神服务文件不存在"
+        return
+    fi
+
     grep -q -- "--mode tun" /etc/init.d/acc
     if [ $? -eq 0 ]; then
         current_mode="tun"
@@ -154,10 +169,10 @@ switch_mode() {
     if [ "$current_mode" = "tproxy" ]; then
         sed -i "s/${args}/--mode tun/" /etc/init.d/acc
     else
-        sed -i "s/--mode tun/${args}/" /etc/init.d/acc
+        sed -i "s/--mode tun/${args}/" /etc.init.d/acc
     fi
-    /etc/init.d/acc stop
-    /etc/init.d/acc start
+    /etc.init.d/acc stop
+    /etc.init.d/acc start
 }
 
 help() {
