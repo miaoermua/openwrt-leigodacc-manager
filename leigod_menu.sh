@@ -11,8 +11,7 @@ if [ -e /etc/asus_release ]; then
     exit 0
 fi
 
-openwrt_release=$(cat /etc/openwrt_release)
-if ! grep -q "OpenWrt" <<<"$openwrt_release"; then
+if ! grep -q "OpenWrt" /etc/openwrt_release; then
     echo "Your system is not supported!"
     exit 1
 fi
