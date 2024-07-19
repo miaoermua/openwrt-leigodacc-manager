@@ -149,8 +149,8 @@ service() {
         /etc/init.d/acc disable
         /etc/init.d/acc stop
     else
-        /etc.init.d/acc enable
-        /etc.init.d/acc start
+        /etc/init.d/acc enable
+        /etc/init.d/acc start
     fi
 }
 
