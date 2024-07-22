@@ -14,7 +14,7 @@ if [ -e /etc/asus_release ]; then
     exit 0
 fi
 
-if ! grep -q "OpenWrt" /etc/openwrt_release; then
+if ! grep -q -E "OpenWrt|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; then
     echo "Your system is not supported!"
     echo "别逗，你的系统无法运行 OpenWrt LeigodAcc 管理器!"
     exit 1
