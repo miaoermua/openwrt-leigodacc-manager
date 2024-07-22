@@ -79,10 +79,10 @@ install_leigodacc() {
 
     for pkg in libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
         if ! opkg list_installed | grep -q "$pkg"; then
-            echo "[INFO] 安装 $pkg"
+            echo "[INFO] 正在安装必备组件 $pkg"
             opkg install $pkg
         else
-            echo "[INFO] $pkg 已安装，跳过"
+            echo "[INFO] $pkg 必备组件已安装，跳过"
         fi
     done
 
