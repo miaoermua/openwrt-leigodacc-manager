@@ -1,6 +1,6 @@
 # openwrt-leigodacc-manager
 
-基于 shell 脚本的雷神插件管理器，适用于 OpenWrt 系统
+基于 shell 脚本的雷神加速器插件管理器，适用于 OpenWrt 系统
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
 - [x] 自动安装雷神依赖，支持启用天灵软件源安装部分缺失依赖
