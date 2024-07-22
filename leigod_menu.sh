@@ -24,7 +24,8 @@ leigod_menu() {
     echo "3. 重装/更新"
     echo "4. 禁用/启用 雷神服务"
     echo "5. 切换运行模式 (TUN/Tproxy)"
-    echo "6. 帮助"
+    echo "6. 安装兼容性依赖 (主机优化)"
+    echo "7. 帮助"
     echo "0. 退出"
     echo ""
     echo "选择数字功能项并回车执行: "
@@ -85,7 +86,7 @@ install_leigodacc() {
         fi
     done
 
-    for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset; do
+    for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[INFO] 尝试安装 $pkg"
             opkg install $pkg
@@ -102,6 +103,71 @@ install_leigodacc() {
         echo "[ERROR] LeigodAcc 未安装，可能是设备存储已满!"
         return
     fi
+}
+
+install_compatibility_dependencies() {
+    packages="tc-full conntrack conntrackd libnetfilter-cttimeout1 libnetfilter-cthelper0"
+    tmp_dir="/tmp/olmtemp"
+    mkdir -p "$tmp_dir"
+
+    # Determine architecture
+    arch=$(opkg print-architecture | awk '/^[^ ]+ 10$/ {print $1}')
+    case "$arch" in
+        x86_64)
+            urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/packages/libnetfilter-cttimeout1_1.0.0-2_x86_64.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/packages/libnetfilter-cthelper0_1.0.0-2_x86_64.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/base/tc-full_6.3.0-1_x86_64.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/packages/conntrackd_1.4.8-1_x86_64.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/packages/conntrack_1.4.8-1_x86_64.ipk"
+            ;;
+        mips_24kc)
+            urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/conntrackd_1.4.8-1_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/conntrack_1.4.8-1_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/libnetfilter-cthelper0_1.0.0-2_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/libnetfilter-cttimeout1_1.0.0-2_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/base/tc-full_6.3.0-1_mips_24kc.ipk"
+            ;;
+        aarch64_cortex-a53)
+            urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/base/tc-full_6.3.0-1_aarch64_cortex-a53.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/packages/conntrack_1.4.8-1_aarch64_cortex-a53.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/packages/conntrackd_1.4.8-1_aarch64_cortex-a53.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/packages/libnetfilter-cttimeout1_1.0.0-2_aarch64_cortex-a53.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/packages/libnetfilter-cthelper0_1.0.0-2_aarch64_cortex-a53.ipk"
+            ;;
+        aarch64_generic)
+            urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_generic/packages/conntrack_1.4.8-1_aarch64_generic.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_generic/packages/conntrackd_1.4.8-1_aarch64_generic.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_generic/packages/libnetfilter-cthelper0_1.0.0-2_aarch64_generic.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_generic/packages/libnetfilter-cttimeout1_1.0.0-2_aarch64_generic.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_generic/base/tc-full_6.3.0-1_aarch64_generic.ipk"
+            ;;
+        *)
+            echo "[ERROR] 不支持的架构: $arch"
+            return
+            ;;
+    esac
+
+    for pkg in $packages; do
+        if ! opkg list_installed | grep -q "$pkg"; then
+            echo "[INFO] 安装 $pkg"
+            opkg install $pkg
+        else
+            echo "[INFO] $pkg 已安装，跳过"
+        fi
+    done
+
+    for pkg in $packages; do
+        if ! opkg list_installed | grep -q "$pkg"; then
+            echo "[INFO] $pkg 未在官方源中找到，尝试使用第三方源"
+            echo "正在使用天灵 immortalwrt 的软件源，并不是原生支持的软件可能存在官方源除外的问题"
+            for url in $urls; do
+                wget -P "$tmp_dir" "$url"
+            done
+            opkg install "$tmp_dir"/*.ipk
+            break
+        fi
+    done
+    rm -rf "$tmp_dir"
 }
 
 uninstall_leigodacc() {
@@ -182,6 +248,7 @@ help() {
     echo "3. 重装：重装 LeigodAcc"
     echo "4. 禁用/启用：禁用或启用 LeigodAcc 服务"
     echo "5. 切换运行模式：在 TUN 和 Tproxy 模式之间切换"
+    echo "6. 安装兼容性依赖：尝试使用天灵 immoralwrt 源安装常见缺失依赖"
     echo "6. 帮助：显示帮助信息"
     echo "0. 退出：退出脚本"
 }
@@ -207,6 +274,9 @@ while true; do
             switch_mode
             ;;
         6)
+            install_compatibility_dependencies
+            ;;
+        7)
             help
             ;;
         0)
