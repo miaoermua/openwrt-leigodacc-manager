@@ -11,7 +11,7 @@
 执行下列命令 **使用 Leigod Acc Manager**
 
 ```sh
-sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-manager@main/leigod_menu.sh)"
+sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-manager@main/leigod.sh)"
 ```
 
 > 此方法安装的不受 opkg 包管理器管理，无法通过 opkg 卸载雷神插件
