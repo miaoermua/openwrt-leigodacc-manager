@@ -249,16 +249,18 @@ switch_mode() {
         return
     fi
 
-    grep -q -- "--mode tun" /etc/init.d/acc
-    if [ $? -eq 0 ]; then
+    if grep -q -- "--mode tun" /etc/init.d/acc; then
         current_mode="tun"
     else
         current_mode="tproxy"
     fi
+
     if [ "$current_mode" = "tproxy" ]; then
-        sed -i "s/${args}/--mode tun/" /etc/init.d/acc
+        sed -i 's|${args}|--mode tun|' /etc/init.d/acc
+        echo "[INFO] 已切换 tun 模式"
     else
-        sed -i "s/--mode tun/${args}/" /etc/init.d/acc
+        sed -i 's|--mode tun|${args}|' /etc/init.d/acc
+        echo "[INFO] 已切换 tproxy 模式"
     fi
     /etc/init.d/acc stop
     /etc/init.d/acc start
