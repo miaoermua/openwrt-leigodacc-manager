@@ -3,7 +3,7 @@
 一个基于 shell 脚本管理雷神插件的快捷工具，适用于 OpenWrt 系统
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
-- [x] 自动安装雷神依赖
+- [x] 自动安装雷神依赖，支持启用天灵软件源安装部分缺失依赖
 - [x] 支持修改雷神加速器为 TUN 模式，默认为 Tproxy
 - [ ] 不支持和 Proxy 共存(同时启用)
 
@@ -51,9 +51,10 @@ kmod-tun
 curl
 ```
 
-非必要组件（影响游戏内 PING 值）
+非必要组件（影响游戏内 PING 值，影响 NAT 类型检测）
 
 ```
 kmod-ipt-tproxy
 kmod-netem
+conntrack
 ```
