@@ -258,7 +258,7 @@ switch_mode() {
     if [ "$current_mode" = "tproxy" ]; then
         sed -i "s/${args}/--mode tun/" /etc/init.d/acc
     else
-        sed -i "s/--mode tun/${args}/" /etc.init.d/acc
+        sed -i "s/--mode tun/${args}/" /etc/init.d/acc
     fi
     /etc/init.d/acc stop
     /etc/init.d/acc start
