@@ -255,7 +255,7 @@ help() {
     echo "4. 禁用/启用：禁用或启用 LeigodAcc 服务"
     echo "5. 切换运行模式：在 TUN 和 Tproxy 模式之间切换"
     echo "6. 安装兼容性依赖：尝试使用天灵 immoralwrt 源安装常见缺失依赖"
-    echo "6. 帮助：显示帮助信息"
+    echo "7. 帮助：显示帮助信息"
     echo "0. 退出：退出脚本"
 }
 
