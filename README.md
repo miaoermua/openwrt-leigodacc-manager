@@ -48,6 +48,7 @@ tc-full
 kmod-ipt-ipset
 ipset
 kmod-tun
+curl
 ```
 
 非必要组件（影响游戏内 PING 值）
