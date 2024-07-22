@@ -236,9 +236,11 @@ service() {
     if /etc/init.d/acc enabled; then
         /etc/init.d/acc disable
         /etc/init.d/acc stop
+        echo "[INFO] LeigodAcc 服务已禁用并关闭"
     else
         /etc/init.d/acc enable
         /etc/init.d/acc start
+        echo "[INFO] LeigodAcc 服务已启用并启动"
     fi
 }
 
