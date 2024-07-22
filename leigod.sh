@@ -264,6 +264,7 @@ switch_mode() {
     fi
     /etc/init.d/acc stop
     /etc/init.d/acc start
+    echo "[INFO] 已经重启 LeigodAcc 服务"
 }
 
 help() {
