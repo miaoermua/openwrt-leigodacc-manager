@@ -78,7 +78,7 @@ install_leigodacc() {
         echo "Detected third-party firmware: $(echo "$release_info" | grep -E "iStoreOS|QWRT|ImmortalWrt|LEDE")"
     fi
 
-    rm /var/lock/opkg.lock
+    [ -e /var/lock/opkg.lock ] && rm /var/lock/opkg.lock
     opkg update
 
     for pkg in libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
@@ -99,21 +99,22 @@ install_leigodacc() {
         fi
     done
 
-    for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack curl libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
-        if ! opkg list_installed | grep -q "$pkg"; then
-            echo "[ERROR] 缺少包: $pkg"
-            echo "你可以通过管理器中的安装依赖性组件进行补充!"
-        fi
-    done
-
     echo "[INFO] 下面是雷神提供的脚本,打印内容偏长如遇到问题请提供输出内容(截图/文字)反馈到群里."
     
     cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
 
     if [ ! -d /usr/sbin/leigod ]; then
         echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满!"
-        return
+    else
+        echo "[INFO] LeigodAcc 已成功安装"
     fi
+
+    for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack curl libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
+        if ! opkg list_installed | grep -q "$pkg"; then
+            echo "[INFO] 缺少组件包: $pkg"
+            echo "[INFO] 你可以通过管理器中的安装依赖性组件进行补充!"
+        fi
+    done
 }
 
 install_compatibility_dependencies() {
