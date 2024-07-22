@@ -17,6 +17,8 @@ if ! grep -q "OpenWrt" /etc/openwrt_release; then
 fi
 
 leigod_menu() {
+    echo ""
+    echo "============================="
     echo "OpenWrt LeigodAcc Manager"
     echo ""
     echo "1. 安装"
@@ -27,7 +29,7 @@ leigod_menu() {
     echo "6. 安装兼容性依赖 (主机优化)"
     echo "7. 帮助"
     echo "0. 退出"
-    echo ""
+    echo "============================="
     echo "选择数字功能项并回车执行: "
 }
 
