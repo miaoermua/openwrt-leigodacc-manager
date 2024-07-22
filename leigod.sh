@@ -39,8 +39,7 @@ leigod_menu() {
 
 install_leigodacc() {
     if [ -d /usr/sbin/leigod ]; then
-        echo "检测到已经安装 LeigodAcc"
-        echo "选择 [1] 继续安装 / [2] 取消"
+        echo -n "[INFO] 检测到已经安装 LeigodAcc ([1]继续安装 / [2]取消): "
         read choice
         case $choice in
             1)
@@ -175,7 +174,7 @@ install_compatibility_dependencies() {
     for pkg in $packages; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[INFO] $pkg 未在官方源中找到，尝试使用第三方源"
-            echo "正在使用天灵 immortalwrt pku 的软件源，并不是原生支持的软件包可能会存在你所在的第三方固件源除外的问题"
+            echo "[INFO] 正在使用天灵 immortalwrt pku 的软件源，并不是原生支持的软件包可能会存在你所在的第三方固件源除外的问题"
             for url in $urls; do
                 wget -P "$tmp_dir" "$url"
             done
@@ -199,7 +198,7 @@ uninstall_leigodacc() {
         return
     fi
 
-    echo "确定卸载? 输入数字后回车或 10s 后自动卸载 ([1]确定 / [2]取消): "
+    echo "[INFO] 确定卸载? 输入数字后回车或 10s 后自动卸载 ([1]确定 / [2]取消): "
     read -t 10 choice
     case $choice in
         1)
