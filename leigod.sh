@@ -260,8 +260,8 @@ switch_mode() {
     else
         sed -i "s/--mode tun/${args}/" /etc.init.d/acc
     fi
-    /etc.init.d/acc stop
-    /etc.init.d/acc start
+    /etc/init.d/acc stop
+    /etc/init.d/acc start
 }
 
 help() {
