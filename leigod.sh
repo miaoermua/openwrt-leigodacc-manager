@@ -285,8 +285,8 @@ disabled_ipv6() {
         echo "[INFO] 其他 OpenWrt 版本可能需要在 Luci 界面中启用其他 IPv6 选项以获取正常的 IPv6 网络支持"
     else
         uci delete dhcp.lan.ra_flags
-        uci set dhcp.lan.ra='disable'
-        uci set dhcp.lan.dhcpv6='disable'
+        uci set dhcp.lan.ra='disabled'
+        uci set dhcp.lan.dhcpv6='disabled'
         uci add_list dhcp.lan.ra_flags='none'
         echo "[INFO] IPv6 已禁用"
         echo "[INFO] iOS/Android 设备请忘记无线 Wi-Fi 网络再连接，插件内就会自动识别"
@@ -295,6 +295,8 @@ disabled_ipv6() {
     uci commit dhcp
     /etc/init.d/odhcpd restart
 }
+
+
 
 help() {
     echo ""
