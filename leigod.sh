@@ -31,7 +31,8 @@ leigod_menu() {
     echo "4. 禁用/启用 雷神服务"
     echo "5. 切换运行模式 (TUN/Tproxy)"
     echo "6. 安装兼容性依赖 (主机优化)"
-    echo "7. 反馈/帮助"
+    echo "7. 禁用 IPv6 (手机优化)"
+    echo "8. 反馈/帮助"
     echo "0. 退出"
     echo "============================="
     echo -n "选择数字功能项并回车执行: "
@@ -268,6 +269,33 @@ switch_mode() {
     echo "[INFO] 已经重启 LeigodAcc 服务"
 }
 
+disabled_ipv6() {
+    config_file="/etc/config/dhcp"
+    option_dhcpv6=$(uci get dhcp.lan.dhcpv6)
+    option_ra=$(uci get dhcp.lan.ra)
+
+    if [ "$option_dhcpv6" = "disabled" ] && [ "$option_ra" = "disabled" ]; then
+        uci set dhcp.lan.ra='server'
+        uci set dhcp.lan.dhcpv6='server'
+        uci delete dhcp.lan.ra_flags
+        uci add_list dhcp.lan.ra_flags='managed-config'
+        uci add_list dhcp.lan.ra_flags='other-config'
+        echo "[INFO] IPv6 已启用"
+        echo "[INFO] 该功能只在 LEDE/QWRT/CatWrt 中测试"
+        echo "[INFO] 其他 OpenWrt 版本可能需要在 Luci 界面中启用其他 IPv6 选项以获取正常的 IPv6 网络支持"
+    else
+        uci delete dhcp.lan.ra_flags
+        uci set dhcp.lan.ra='disable'
+        uci set dhcp.lan.dhcpv6='disable'
+        uci add_list dhcp.lan.ra_flags='none'
+        echo "[INFO] IPv6 已禁用"
+        echo "[INFO] iOS/Android 设备请忘记无线 Wi-Fi 网络再连接，插件内就会自动识别"
+    fi
+
+    uci commit dhcp
+    /etc/init.d/odhcpd restart
+}
+
 help() {
     echo ""
     echo "BUG 反馈请加群: 632342113"
@@ -280,7 +308,8 @@ help() {
     echo "4. 禁用/启用：禁用或启用 LeigodAcc 服务"
     echo "5. 切换运行模式：在 TUN 和 Tproxy 模式之间切换"
     echo "6. 安装兼容性依赖：尝试使用天灵 immoralwrt pku 源安装常见缺失依赖"
-    echo "7. 帮助：显示帮助信息"
+    echo "7. 禁用 IPv6: 可以使手机部分手机游戏也能正常加速，会禁用掉 IPv6 网络"
+    echo "8. 帮助：显示帮助信息"
     echo "0. 退出：退出管理器"
     echo ""
     sleep 3
@@ -310,6 +339,9 @@ while true; do
             install_compatibility_dependencies
             ;;
         7)
+            disabled_ipv6
+            ;;
+        8)
             help
             ;;
         0)
