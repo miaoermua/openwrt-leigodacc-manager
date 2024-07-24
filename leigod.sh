@@ -27,17 +27,6 @@ if ! grep -q -E "OpenWrt|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; then
     exit 1
 fi
 
-if [ -f /etc/catwrt_release ]; then
-    . /etc/catwrt_release
-    if [ "$version" = "v24.9" ] && [ "$arch" = "amd64" ]; then
-        if [ ! -d /usr/sbin/leigod ]; then
-            echo "[INFO] 开始安装 LeigodAcc"
-            install_leigodacc
-            exit 0
-        fi
-    fi
-fi
-
 leigod_menu() {
     echo ""
     echo "============================="
