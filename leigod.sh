@@ -307,6 +307,7 @@ disabled_ipv6() {
 
 help() {
     echo ""
+    echo "BLOG: miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
     echo "BUG 反馈请加群: 632342113"
     echo "Tip: LeigodAcc 特指雷神加速器"
     echo ""
