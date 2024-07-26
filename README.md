@@ -55,6 +55,7 @@ kmod-ipt-ipset
 ipset
 kmod-tun
 curl
+miniupnpd
 ```
 
 非必要组件（影响游戏内 PING 值，影响 NAT 类型检测）
