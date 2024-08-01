@@ -20,6 +20,8 @@ sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-m
 
 该方法基于雷神加速器官方教程编写，管理程序开源不涉及商业竞争版权由 ©️ 雷神（武汉）网络技术有限公司 所有
 
+使用喵二专属雷神加速器口令 `miaoer` 可获得 50 小时不可暂停体验时长，搭配 OpenWrt 端可实现 6 端加速 PC 兑换: 雷神加速器 - 右上角更多 - CDK/口令兑换 - 口令兑换时长输入 `miaoer` 兑换
+
 ## 已知问题
 
 对应 pkg 包不存在，请换支持的固件彻底解决，如果是非必要组件可以不安装自适应。
