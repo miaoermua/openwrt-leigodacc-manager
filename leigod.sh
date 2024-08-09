@@ -195,7 +195,7 @@ install_compatibility_dependencies() {
     for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack curl libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[ERROR] 缺少包: $pkg"
-            echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件,CatWrt 未来将支持 LeigodAcc 依赖."
+            echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件,或者使用 CatWrt.v24.9.amd64 支持 LeigodAcc 全部依赖."
         fi
     done
 }
