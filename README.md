@@ -2,6 +2,8 @@
 
 基于 shell 脚本的雷神加速器插件管理器，适用于 OpenWrt 系统
 
+支持第三方 OpenWrt 如 QWRT/LEDE/ImmoraliWrt/iStoreOS 安装雷神加速器插件
+
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
 - [x] 自动安装雷神依赖，支持启用天灵 ImmoralWrt 软件源安装部分缺失依赖
 - [x] 支持修改雷神加速器运行模式(TUN/Tproxy)
