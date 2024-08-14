@@ -140,15 +140,15 @@ install_compatibility_dependencies() {
             https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/packages/conntrackd_1.4.8-1_x86_64.ipk
             https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/x86_64/packages/conntrack_1.4.8-1_x86_64.ipk"
             ;;
-        mips_24kc)
+        mipsel_24kc)
             packages="tc-full conntrack conntrackd libnetfilter-cttimeout1 libnetfilter-cthelper0"
-            urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/conntrackd_1.4.8-1_mips_24kc.ipk
-            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/conntrack_1.4.8-1_mips_24kc.ipk
-            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/libnetfilter-cthelper0_1.0.0-2_mips_24kc.ipk
-            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/packages/libnetfilter-cttimeout1_1.0.0-2_mips_24kc.ipk
-            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mips_24kc/base/tc-full_6.3.0-1_mips_24kc.ipk"
+            urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mipsel_24kc/packages/conntrackd_1.4.8-1_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mipsel_24kc/packages/conntrack_1.4.8-1_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mipsel_24kc/packages/libnetfilter-cthelper0_1.0.0-2_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mipsel_24kc/packages/libnetfilter-cttimeout1_1.0.0-2_mips_24kc.ipk
+            https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/mipsel_24kc/base/tc-full_6.3.0-1_mips_24kc.ipk"
             ;;
-        aarch64_cortex-a53)
+        aarch64_cortex-a53|aarch64_cortex-a53+crypto)
             packages="tc-full conntrack conntrackd libnetfilter-cttimeout1 libnetfilter-cthelper0"
             urls="https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/base/tc-full_6.3.0-1_aarch64_cortex-a53.ipk
             https://mirrors.pku.edu.cn/immortalwrt/releases/23.05.3/packages/aarch64_cortex-a53/packages/conntrack_1.4.8-1_aarch64_cortex-a53.ipk
