@@ -39,7 +39,8 @@ leigod_menu() {
     echo "5. 切换运行模式 (TUN/Tproxy)"
     echo "6. 安装兼容性依赖 (主机优化)"
     echo "7. 禁用 IPv6 (手机优化)"
-    echo "8. 反馈/帮助"
+    echo "8. 切换为 Lean IPKG 版"
+    echo "9. 反馈/帮助"
     echo "0. 退出"
     echo "============================="
     echo -n "选择数字功能项并回车执行: "
@@ -195,7 +196,7 @@ install_compatibility_dependencies() {
     for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack curl libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[ERROR] 缺少包: $pkg"
-            echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件,或者使用 CatWrt.v24.9.amd64 支持 LeigodAcc 全部依赖."
+            echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件,或者使用 CatWrt.v24.9 支持 LeigodAcc 全部依赖."
         fi
     done
 }
@@ -217,17 +218,25 @@ uninstall_leigodacc() {
         *)
             ;;
     esac
-    
-    rm /etc/config/accelerator
-    /etc/init.d/acc disable
-    /etc/init.d/acc stop
-    rm /etc/init.d/acc
-    rm /usr/lib/lua/luci/controller/acc.lua
-    rm -rf /usr/lib/lua/luci/model/cbi/leigod
-    rm -rf /usr/lib/lua/luci/view/leigod
-    rm -rf /usr/sbin/leigod
-    rm /usr/lib/lua/luci/i18n/acc.zh-cn.lmo
-    rm -rf /tmp/luci-*
+
+    # 检查是否安装了 leigod-acc 包
+    if opkg list_installed | grep -q "leigod-acc"; then
+        echo "[INFO] leigod-acc 通过 opkg 安装，正在卸载"
+        opkg remove leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
+        echo "[INFO] LeigodAcc 卸载成功"
+    else
+        rm /etc/config/accelerator
+        /etc/init.d/acc disable
+        /etc/init.d/acc stop
+        rm /etc/init.d/acc
+        rm /usr/lib/lua/luci/controller/acc.lua
+        rm -rf /usr/lib/lua/luci/model/cbi/leigod
+        rm -rf /usr/lib/lua/luci/view/leigod
+        rm -rf /usr/sbin/leigod
+        rm /usr/lib/lua/luci/i18n/acc.zh-cn.lmo
+        rm -rf /tmp/luci-*
+        echo "[INFO] LeigodAcc 卸载成功"
+    fi
 }
 
 reinstall_leigodacc() {
@@ -303,7 +312,38 @@ disabled_ipv6() {
     /etc/init.d/odhcpd restart
 }
 
+install_lean_ipkg_version() {
+    if opkg list_installed | grep -q "leigod-acc"; then
+        echo "[INFO] leigod-acc 已安装，L 有大雕"
+    else
+        echo "[INFO] leigod-acc 未安装"
+    fi
+    
+    if [ ! -f /etc/catwrt_release ]; then
+        echo "[ERROR] 目前仅 CatWrt.v24.9.mt7621 支持使用切换为 lean ipkg 版本，建议你使用管理器进行非 ipkg 安装"
+        return 1
+    else
+        arch=$(grep "arch=" /etc/catwrt_release | cut -d'=' -f2)
+        version=$(grep "version=" /etc/catwrt_release | cut -d'=' -f2)
 
+        if [ "$arch" != "mt7621" ] || [ "$version" != "v24.9" ]; then
+            echo "[ERROR] 目前仅 CatWrt.v24.9.mt7621 支持使用切换为 lean ipkg 版本，建议你使用管理器进行非 ipkg 安装"
+            echo "Cattools - Apply_repo"
+            return 1
+        fi
+    fi
+
+    if grep -q "catwrt" /etc/opkg/distfeeds.conf; then
+        if opkg list | grep -q "leigod-acc"; then
+            opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
+            echo "[INFO] leigod-acc 及其相关包已安装"
+        else
+            echo "[INFO] 在线软件源中没有找到 leigod-acc 包"
+        fi
+    else
+        echo "[ERROR] 检测到还没通过 Cattools 应用软件源，无法继续操作"
+    fi
+}
 
 help() {
     echo ""
@@ -352,6 +392,9 @@ while true; do
             disabled_ipv6
             ;;
         8)
+            install_lean_ipkg_version
+            ;;
+        9)
             help
             ;;
         0)
