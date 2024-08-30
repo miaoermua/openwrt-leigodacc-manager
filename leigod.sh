@@ -223,6 +223,7 @@ uninstall_leigodacc() {
     if opkg list_installed | grep -q "leigod-acc"; then
         echo "[INFO] leigod-acc 通过 opkg 安装，正在卸载"
         opkg remove leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
+        rm -rf /tmp/luci-*
         echo "[INFO] LeigodAcc 卸载成功"
     else
         rm /etc/config/accelerator
