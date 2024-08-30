@@ -107,12 +107,13 @@ install_leigodacc() {
         fi
     done
 
-    echo "[INFO] 下面是雷神提供的脚本,打印内容偏长如遇到问题请提供输出内容(截图/文字)反馈到群里."
+    echo "[INFO] 下面是雷神官方提供的脚本,打印内容偏长如遇到问题请提供输出内容(截图/文字)反馈到群里."
     
     cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
 
     if [ ! -d /usr/sbin/leigod ]; then
-        echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满!"
+        echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满或者雷神服务器挂了!"
+        echo "请登录 OpenWrt 路由器后台: 系统-软件包 查看当前可用空间诊断."
     else
         echo "[INFO] LeigodAcc 已成功安装"
     fi
@@ -196,7 +197,9 @@ install_compatibility_dependencies() {
     for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack curl libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[ERROR] 缺少包: $pkg"
-            echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件,或者使用 CatWrt.v24.9 支持 LeigodAcc 全部依赖."
+            echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件替换掉当前系统,或者使用 CatWrt.v24.9 支持 LeigodAcc 全部依赖."
+            echo "https://www.miaoer.xyz/posts/network/catwrt"
+            echo
         fi
     done
 }
@@ -316,6 +319,7 @@ disabled_ipv6() {
 install_lean_ipkg_version() {
     if opkg list_installed | grep -q "leigod-acc"; then
         echo "[INFO] leigod-acc 已安装，L 有大雕"
+        return
     else
         echo "[INFO] leigod-acc 未安装"
     fi
