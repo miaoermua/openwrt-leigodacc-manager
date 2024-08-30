@@ -55,8 +55,7 @@ leigod_menu() {
     echo ""
     echo "============================="
     echo "OpenWrt LeigodAcc Manager"
-    echo "Blog: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
-    echo ""
+    ehco
     echo "1. 安装"
     echo "2. 卸载"
     echo "3. 重装/更新"
@@ -377,7 +376,7 @@ install_lean_ipkg_version() {
 
 help() {
     echo ""
-    echo "BLOG: miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
+    echo "BLOG: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
     echo "BUG 反馈请加群: 632342113"
     echo "Tip: LeigodAcc 特指雷神加速器"
     echo ""
