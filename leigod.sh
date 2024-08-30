@@ -13,7 +13,7 @@ if [ -e /etc/asus_release ]; then
     echo "[ERROR] 检测到 ASUS 路由器，无法运行 OpenWrt LeigodAcc 管理器，你不是 OpenWrt 系统!"
 
     if [ ! -d /jffs/softcenter ]; then
-        echo "[INFO] 检测到官改 or Koolcenter 版本，即将运行官方脚本开始安装"
+        echo "[INFO] 检测到官改 or Koolcenter 版本，即将脱离 OpenWrt 管理器运行官方脚本开始安装."
         echo "[INFO] 以下内容均与 OpenWrt 管理器作者无关，本人并无华硕路由器 Debug!"
         echo
         sleep 5
@@ -35,7 +35,7 @@ if [ -d /userdisk/appdata ]; then
     if [[ -n ${name} ]]; then
         echo "[INFO] 小米路由器: ${name}"
         sleep 5
-        echo "[INFO] 检测到小米已经解锁了 SSH，即将脱离 OpenWrt 管理器运行官方脚本开始安装"
+        echo "[INFO] 检测到小米已经解锁了 SSH，即将脱离 OpenWrt 管理器运行官方脚本开始安装."
         echo "[INFO] 以下内容均与 OpenWrt 管理器作者无关，本人并无小米路由器 Debug!"
         echo
         cd /tmp || { echo "[ERROR] 无法切换到 /tmp 目录"; exit 1; }
