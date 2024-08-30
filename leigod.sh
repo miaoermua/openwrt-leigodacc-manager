@@ -6,20 +6,44 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+# Prevent Xiaomi Routers and Qunou Routers from running openwrt-leigodacc-manager
 if [ -e /etc/asus_release ]; then
-    echo "TONY 别肘!我爱 BCM!"
+    echo "TONY 别肘! 我爱 BCM!"
     echo ""
-    echo "无法运行 OpenWrt LeigodAcc 管理器"
-    echo "此脚本不适用于 ASUS 请在梅改固件中使用传统方法安装"
+    echo "[ERROR] 检测到 ASUS 路由器，无法运行 OpenWrt LeigodAcc 管理器，因为你不是 OpenWrt 系统!"
+
+    if [ ! -d /jffs/softcenter ]; then
+        echo "[INFO] 检测到官改 or Koolcenter 版本，即将运行官方脚本开始安装"
+        echo "[INFO] 以下内容均与管理器作者无关，本人并无华硕路由器 Debug!"
+        echo
+        sleep 5
+        cd /tmp || { echo "[ERROR] 无法切换到 /tmp 目录"; exit 1; }
+        sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
+
+    fi
     exit 0
 fi
 
 if [ -d /userdisk/appdata ]; then
     echo "R u OK?"
     echo ""
-    echo "检测到小米路由器，无法运行 OpenWrt LeigodAcc 管理器"
-    exit 1
+    echo "[ERROR] 检测到小米路由器，无法运行 OpenWrt LeigodAcc 管理器，因为你不是 OpenWrt 系统!"
+    local name=$(uci get misc.hardware.displayName 2>/dev/null)
+    if [[ $? != "0" || -z ${name} ]]; then
+        name=$(uci get misc.hardware.model 2>/dev/null)
+    fi
+    if [[ -n ${name} ]]; then
+        echo "[INFO] 小米路由器: ${name}"
+        sleep 5
+        echo "[INFO] 检测到小米已经解锁了 SSH，即将脱离 OpenWrt 管理器运行官方脚本开始安装"
+        echo "[INFO] 以下内容均与 OpenWrt 管理器作者无关，本人并无小米路由器 Debug!"
+        echo
+        cd /tmp || { echo "[ERROR] 无法切换到 /tmp 目录"; exit 1; }
+        sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
+        exit 0
+    fi
 fi
+
 
 if ! grep -qi -E "OpenWrt|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; then
     echo "Your system is not supported!"
@@ -102,7 +126,7 @@ install_leigodacc() {
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[INFO] 尝试安装 $pkg"
             opkg install $pkg
-        else
+        elshttp://119.3.40.126/router_plugin/plugin_install.sh
             echo "[INFO] $pkg 已安装，跳过"
         fi
     done
@@ -410,3 +434,4 @@ while true; do
             ;;
     esac
 done
+
