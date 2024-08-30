@@ -378,7 +378,7 @@ help() {
     echo ""
     echo "BLOG: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
     echo "BUG 反馈请加群: 632342113"
-    echo "Tip: LeigodAcc 特指雷神加速器"
+    echo "Tip: LeigodAcc 特指雷神加速器，leigod-acc 特指 Lean 版雷神插件"
     echo ""
     echo "HELP："
     echo "1. 安装：安装 LeigodAcc"
@@ -388,7 +388,8 @@ help() {
     echo "5. 切换运行模式：在 TUN 和 Tproxy 模式之间切换"
     echo "6. 安装兼容性依赖：尝试使用天灵 immoralwrt pku 源安装常见缺失依赖"
     echo "7. 禁用 IPv6: 可以使手机部分手机游戏也能正常加速，会禁用掉 IPv6 网络"
-    echo "8. 帮助：显示帮助信息"
+    echo "8. 切换为 Lean IPKG 版：可以通过 opkg 安装 leigod-acc 插件，为实验性版本"
+    echo "9. 帮助：显示帮助信息"
     echo "0. 退出：退出管理器"
     echo ""
     sleep 3
