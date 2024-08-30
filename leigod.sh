@@ -55,7 +55,7 @@ leigod_menu() {
     echo ""
     echo "============================="
     echo "OpenWrt LeigodAcc Manager"
-    ehco
+    echo
     echo "1. 安装"
     echo "2. 卸载"
     echo "3. 重装/更新"
