@@ -5,12 +5,13 @@
 支持第三方 OpenWrt 如 QWRT/LEDE/ImmoraliWrt/iStoreOS 安装雷神加速器插件
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
+- [x] 支持引导华硕/小米路由器到官方脚本 (看项目名字)
 - [x] 自动安装雷神依赖，支持启用天灵 ImmoralWrt 软件源安装部分缺失依赖
-- [x] 支持修改雷神加速器运行模式(TUN/Tproxy)
-- [x] 支持手机加速优化(禁用 IPv6)
-- [x] 支持主机加速优化 NAT 类型检测(安装依赖组件)
-- [ ] 不支持和 Proxy 插件共存(同时启用表现形式会断网)
-
+- [x] 支持修改雷神加速器运行模式 (TUN/Tproxy)
+- [x] 支持手机加速优化 (禁用 IPv6)
+- [x] 支持主机加速优化 NAT 类型检测 (安装依赖组件)
+- [x] 支持和 Proxy 插件共存，需要开启 TUN 模式 (不开启 TUN 模式同时启用表现形式会断网)
+- [ ] 不建议和不支持论坛乱改系统文件的固件
 
 执行下列命令 **使用 Leigod Acc Manager**
 
@@ -18,7 +19,7 @@
 sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-manager@main/leigod.sh)"
 ```
 
-> 此方法安装的不受 opkg 包管理器管理，无法通过 opkg 卸载雷神插件
+> 此方法安装的不受 opkg 包管理器管理，无法通过 opkg 卸载雷神插件，IPKG Lean 版正在推进中 ✨ 点亮小星星可以吗
 
 该方法基于雷神加速器官方教程编写，管理程序开源不涉及商业竞争版权由 ©️ 雷神（武汉）网络技术有限公司 所有
 
@@ -42,6 +43,14 @@ Cattools - Apply_repo
 ```
 
 **无网** 暂时不支持和 Proxy 性质插件共存，请关闭 Proxy 插件。
+
+**不支持当前 OpenWrt** 是防止有的所谓的牛炸天的论坛固件修改用于识别 OpenWrt 的关键文件 /etc/openwrt_release
+
+```sh
+sed -i 's/Oprt/OpenWrt/g' /etc/openwrt_release
+sed -i 's/KWrt/OpenWrt/g' /etc/openwrt_release
+# 将当前固件名字修改为 OpenWrt，请按照你的文件修改，修改后因为固件不支持的问题本插件无法提供技术支持
+```
 
 ## 组件
 
