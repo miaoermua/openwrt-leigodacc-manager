@@ -126,7 +126,7 @@ install_leigodacc() {
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[INFO] 尝试安装 $pkg"
             opkg install $pkg
-        elshttp://119.3.40.126/router_plugin/plugin_install.sh
+        else
             echo "[INFO] $pkg 已安装，跳过"
         fi
     done
