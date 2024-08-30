@@ -55,6 +55,7 @@ leigod_menu() {
     echo ""
     echo "============================="
     echo "OpenWrt LeigodAcc Manager"
+    echo "Blog: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
     echo ""
     echo "1. 安装"
     echo "2. 卸载"
