@@ -29,7 +29,7 @@ sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-m
 
 ## 已知问题
 
-对应 pkg 包不存在，请换支持的固件彻底解决，如果是非必要组件可以不安装自适应。
+**对应 pkg 包不存在** 请换支持的固件彻底解决，如果是非必要组件可以不安装自适应。
 
 ```shell
 Unknown package 'pkg'.
@@ -37,21 +37,27 @@ Collected errors:
  * opkg_install_cmd: Cannot install package pkg.
 ```
 
-[Cattools](https://github.com/miaoermua/cattools) 是 [CatWrt](https://github.com/miaoermua/CatWrt) 专属工具箱可以实现软件源配置，CatWrt 必须启用后才能安装组件。
+<br>
+
+[Cattools](https://github.com/miaoermua/cattools) 是 [CatWrt](https://github.com/miaoermua/CatWrt) 专属工具箱可以实现 **软件源配置**，CatWrt 必须启用后才能安装组件。
 
 ```shell
 [ERROR] 请先配置软件源
 Cattools - Apply_repo
 ```
 
-**无网** 暂时不支持和 Proxy 性质插件共存，请关闭 Proxy 插件。
+<br>
+
+**无网** 暂时不支持和 Proxy 性质插件共存，请关闭 Proxy 插件
+
+<br>
 
 **不支持当前 OpenWrt** 是防止有的所谓的牛炸天的论坛固件修改用于识别 OpenWrt 的关键文件 /etc/openwrt_release
 
 ```sh
 sed -i 's/Oprt/OpenWrt/g' /etc/openwrt_release
 sed -i 's/KWrt/OpenWrt/g' /etc/openwrt_release
-# 将当前固件名字修改为 OpenWrt，请按照你的文件修改，修改后因为固件不支持的问题本插件无法提供技术支持
+# 将当前固件如上 Oprt KWrt 名字修改为 OpenWrt，请按照你的文件修改，修改后因为固件不支持的问题本插件无法提供技术支持
 ```
 
 ## 组件
