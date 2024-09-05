@@ -4,7 +4,7 @@
 
 博客: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager
 
-支持第一方 QWRT/CatWrt/LEDE、及第三方 OpenWrt 如 /ImmoraliWrt/iStoreOS 安装雷神加速器插件
+支持第一方 QWRT/CatWrt/LEDE、及第三方 OpenWrt 如 ImmoraliWrt/iStoreOS 安装雷神加速器插件
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
 - [x] 支持引导华硕/小米路由器到官方脚本 (看项目名字)
