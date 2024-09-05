@@ -62,6 +62,8 @@ sed -i 's/KWrt/OpenWrt/g' /etc/openwrt_release
 # 将当前固件如上 Oprt KWrt 名字修改为 OpenWrt，请按照你的文件修改，修改后因为固件不支持的问题本插件无法提供技术支持
 ```
 
+本插件可能无法在 **firewall4(nftables)** 环境下运行
+
 ## 组件
 
 只需要极客玩家及开发者了解，小白用户无需留意插件会自动安装可以安装的。
