@@ -391,7 +391,7 @@ install_lean_ipkg_version() {
         opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
         echo "[INFO] Lean 版本 leigod-acc 安装成功！"
     else
-        echo "[INFO] 在线软件源中没有找到 leigod-acc 包，将下载并安装相应的插件。"
+        echo "[INFO] 在线软件源中没有找到 leigod-acc 包，将下载并安装相应的插件"
 
         case "$arch" in
             "aarch64_cortex-a53"|"aarch64_cortex-a53+crypto")
