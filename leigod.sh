@@ -352,6 +352,11 @@ install_lean_ipkg_version() {
         opkg update
     fi
 
+    if [ -d /usr/sbin/leigod ]; then
+        echo -n "[INFO] 检测到已经安装 LeigodAcc 普通版本，请返回管理器卸载后再继续!"
+        return
+    fi
+
     required_packages="libpcap iptables kmod-ipt-nat iptables-mod-tproxy kmod-ipt-tproxy kmod-ipt-ipset ipset kmod-tun curl miniupnpd tc-full kmod-netem conntrack conntrackd"
     missing_packages=""
 
