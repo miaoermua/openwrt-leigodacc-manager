@@ -365,6 +365,11 @@ install_lean_ipkg_version() {
 
     if [ -n "$missing_packages" ]; then
         echo "[ERROR] 检测到在线软件源中缺少的依赖包，无法继续安装: $missing_packages"
+        echo "你的设备暂不支持 Lean 版 IPKG 插件，尝试使用第一方带有依赖的 CatWrt 来安装 IPKG 版本吧，或者使用管理器中的普通安装选项"
+        echo "访问以下链接获取 mt7621 & amd64(x86_64) 版本"
+        echo
+        echo "https://www.miaoer.xyz/posts/network/catwrt"
+        sleep 5
         return 1
     fi
 
@@ -386,7 +391,7 @@ install_lean_ipkg_version() {
         opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
         echo "[INFO] Lean 版本 leigod-acc 安装成功！"
     else
-        echo "[INFO] 在线软件源中没有找到 leigod-acc 包。"
+        echo "[INFO] 在线软件源中没有找到 leigod-acc 包，将下载并安装相应的插件"
         
         case "$arch" in
             "aarch64_cortex-a53"|"aarch64_cortex-a53+crypto")
