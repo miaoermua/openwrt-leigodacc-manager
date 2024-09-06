@@ -352,17 +352,42 @@ install_lean_ipkg_version() {
         opkg update
     fi
 
-    # 获取架构信息
+    required_packages="libpcap iptables kmod-ipt-nat iptables-mod-tproxy kmod-ipt-tproxy kmod-ipt-ipset ipset kmod-tun curl miniupnpd tc-full kmod-netem conntrack conntrackd"
+    missing_packages=""
+
+    echo "[INFO] 检查在线软件源中是否存在所有依赖包..."
+    for package in $required_packages; do
+        if ! opkg list | grep -q "^$package"; then
+            echo "[ERROR] 在线软件源中缺少依赖包: $package"
+            missing_packages="$missing_packages $package"
+        fi
+    done
+
+    if [ -n "$missing_packages" ]; then
+        echo "[ERROR] 检测到在线软件源中缺少的依赖包，无法继续安装: $missing_packages"
+        return 1
+    fi
+
+    echo "[INFO] 所有依赖包已在在线软件源中找到，正在安装缺失的依赖包..."
+
+    for package in $required_packages; do
+        if ! opkg list_installed | grep -q "^$package"; then
+            echo "[INFO] 安装依赖包: $package"
+            opkg install "$package"
+        fi
+    done
+
+    echo "[INFO] 所有依赖包已安装！"
+
     arch=`opkg print-architecture | awk '/^arch/{print $2}'`
 
-    # 检查软件源中是否有 leigod-acc
     if opkg list | grep -q "leigod-acc"; then
         echo "[INFO] 软件源中检测到 leigod-acc 插件，正在安装..."
         opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
-        echo "[INFO] Lean 版本 leigod-acc 安装成功!"
+        echo "[INFO] Lean 版本 leigod-acc 安装成功！"
     else
-        echo "[INFO] 在线软件源中没有找到 leigod-acc 包"
-
+        echo "[INFO] 在线软件源中没有找到 leigod-acc 包。"
+        
         case "$arch" in
             "aarch64_cortex-a53"|"aarch64_cortex-a53+crypto")
                 url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_aarch64_cortex-a53.ipk"
@@ -388,7 +413,7 @@ install_lean_ipkg_version() {
         wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk"
 
         opkg install /tmp/leigod-acc_*.ipk /tmp/luci-app-leigod-acc_1-3_all.ipk /tmp/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk
-        echo "[INFO] leigod-acc 及其相关包已成功安装!"
+        echo "[INFO] Lean IPKG 插件版 leigod-acc 已成功安装!"
     fi
 }
 
