@@ -346,31 +346,83 @@ install_lean_ipkg_version() {
         return
     else
         echo "[INFO] leigod-acc 未安装"
+        if [ -f /var/lock/opkg.lock ]; then
+            rm /var/lock/opkg.lock
+        fi
+        opkg update
     fi
-    
-    if [ ! -f /etc/catwrt_release ]; then
-        echo "[ERROR] 目前仅 CatWrt.v24.9.mt7621 支持使用切换为 lean ipkg 版本，建议你使用管理器进行非 ipkg 安装"
+
+    if [ -d /usr/sbin/leigod ]; then
+        echo "[INFO] 检测到已经安装 LeigodAcc 普通版，需要先在管理器中执行卸载才可以继续!"
+    fi
+
+    required_packages=(
+        libpcap iptables kmod-ipt-nat iptables-mod-tproxy kmod-ipt-tproxy
+        kmod-ipt-ipset ipset kmod-tun curl miniupnpd tc-full kmod-netem
+        conntrack conntrackd
+    )
+
+    missing_packages=()
+
+    echo "[INFO] 检查在线软件源中是否存在所有依赖包..."
+    for package in "${required_packages[@]}"; do
+        if ! opkg list | grep -q "^$package"; then
+            echo "[ERROR] 在线软件源中缺少依赖包: $package"
+            missing_packages+=("$package")
+        fi
+    done
+
+    if [ "${#missing_packages[@]}" -ne 0 ]; then
+        echo "[ERROR] 检测到在线软件源中缺少的依赖包，无法继续安装: ${missing_packages[*]}"
         return 1
-    else
-        arch=$(grep "arch=" /etc/catwrt_release | cut -d'=' -f2)
-        version=$(grep "version=" /etc/catwrt_release | cut -d'=' -f2)
-
-        if [ "$arch" != "mt7621" ] || [ "$version" != "v24.9" ]; then
-            echo "[ERROR] 目前仅 CatWrt.v24.9.mt7621 支持使用切换为 lean ipkg 版本，建议你使用管理器进行非 ipkg 安装"
-            echo "Cattools - Apply_repo"
-            return 1
-        fi
     fi
 
-    if grep -q "catwrt" /etc/opkg/distfeeds.conf; then
-        if opkg list | grep -q "leigod-acc"; then
-            opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
-            echo "[INFO] leigod-acc 及其相关包已安装"
-        else
-            echo "[INFO] 在线软件源中没有找到 leigod-acc 包"
+    echo "[INFO] 所有依赖包已在在线软件源中找到，正在安装缺失的依赖包..."
+
+    for package in "${required_packages[@]}"; do
+        if ! opkg list_installed | grep -q "^$package"; then
+            echo "[INFO] 安装依赖包: $package"
+            opkg install "$package"
         fi
+    done
+
+    echo "[INFO] 软件源已检查完毕!"
+    
+    if opkg list | grep -q "leigod-acc"; then
+        echo "[INFO] 软件源中检测到 leigod-acc 插件，正在安装..."
+        opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
+        echo "[INFO] Lean 版本 leigod-acc 安装成功!"
     else
-        echo "[ERROR] 检测到还没通过 Cattools 应用软件源，无法继续操作"
+        echo "[INFO] 在线软件源中没有找到 leigod-acc 包"
+
+        arch=$(opkg print-architecture | awk '/^arch/{print $2}')
+
+        case "$arch" in
+            "aarch64_cortex-a53|aarch64_cortex-a53+crypto")
+                url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_aarch64_cortex-a53.ipk"
+                ;;
+            "aarch64_generic")
+                url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_aarch64_generic.ipk"
+                ;;
+            "mipsel_24kc")
+                url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_mipsel_24kc.ipk"
+                ;;
+            "x86_64")
+                url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_x86_64.ipk"
+                ;;
+            *)
+                echo "[ERROR] 不支持的架构: $arch"
+                return 1
+                ;;
+        esac
+
+        echo "[INFO] 正在下载 leigod-acc 包: $url"
+        wget -P /tmp "$url"
+        wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-app-leigod-acc_1-3_all.ipk"
+        wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk"
+
+        opkg install /tmp/leigod-acc_*.ipk /tmp/luci-app-leigod-acc_1-3_all.ipk /tmp/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk
+        echo "[INFO] leigod-acc 及其相关包已成功安装!"
     fi
 }
 
