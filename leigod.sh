@@ -252,6 +252,9 @@ uninstall_leigodacc() {
         /etc/init.d/acc disable
         /etc/init.d/acc stop
         opkg remove luci-i18n-leigod-acc-zh-cn luci-app-leigod-acc leigod-acc
+        rm -rf /usr/lib/lua/luci/model/cbi/leigod
+        rm -rf /usr/lib/lua/luci/view/leigod
+        rm -rf /usr/sbin/leigod
         rm -rf /tmp/luci-*
         echo "[INFO] LeigodAcc 卸载成功"
     else
