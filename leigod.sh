@@ -352,42 +352,10 @@ install_lean_ipkg_version() {
         opkg update
     fi
 
-    if [ -d /usr/sbin/leigod ]; then
-        echo "[INFO] 检测到已经安装 LeigodAcc 普通版，需要先在管理器中执行卸载才可以继续!"
-    fi
+    # 获取架构信息
+    arch=`opkg print-architecture | awk '/^arch/{print $2}'`
 
-    required_packages=(
-        libpcap iptables kmod-ipt-nat iptables-mod-tproxy kmod-ipt-tproxy
-        kmod-ipt-ipset ipset kmod-tun curl miniupnpd tc-full kmod-netem
-        conntrack conntrackd
-    )
-
-    missing_packages=()
-
-    echo "[INFO] 检查在线软件源中是否存在所有依赖包..."
-    for package in "${required_packages[@]}"; do
-        if ! opkg list | grep -q "^$package"; then
-            echo "[ERROR] 在线软件源中缺少依赖包: $package"
-            missing_packages+=("$package")
-        fi
-    done
-
-    if [ "${#missing_packages[@]}" -ne 0 ]; then
-        echo "[ERROR] 检测到在线软件源中缺少的依赖包，无法继续安装: ${missing_packages[*]}"
-        return 1
-    fi
-
-    echo "[INFO] 所有依赖包已在在线软件源中找到，正在安装缺失的依赖包..."
-
-    for package in "${required_packages[@]}"; do
-        if ! opkg list_installed | grep -q "^$package"; then
-            echo "[INFO] 安装依赖包: $package"
-            opkg install "$package"
-        fi
-    done
-
-    echo "[INFO] 软件源已检查完毕!"
-    
+    # 检查软件源中是否有 leigod-acc
     if opkg list | grep -q "leigod-acc"; then
         echo "[INFO] 软件源中检测到 leigod-acc 插件，正在安装..."
         opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
@@ -395,10 +363,8 @@ install_lean_ipkg_version() {
     else
         echo "[INFO] 在线软件源中没有找到 leigod-acc 包"
 
-        arch=$(opkg print-architecture | awk '/^arch/{print $2}')
-
         case "$arch" in
-            "aarch64_cortex-a53|aarch64_cortex-a53+crypto")
+            "aarch64_cortex-a53"|"aarch64_cortex-a53+crypto")
                 url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_aarch64_cortex-a53.ipk"
                 ;;
             "aarch64_generic")
