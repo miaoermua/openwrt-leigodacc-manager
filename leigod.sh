@@ -418,12 +418,20 @@ install_lean_ipkg_version() {
         esac
 
         echo "[INFO] 正在下载 leigod-acc 包: $url"
+        echo
         wget -P /tmp "$url"
         wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-app-leigod-acc_1-3_all.ipk"
         wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk"
 
         opkg install /tmp/leigod-acc_*.ipk /tmp/luci-app-leigod-acc_1-3_all.ipk /tmp/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk
-        echo "[INFO] Lean IPKG 插件版 leigod-acc 已成功安装!"
+        echo
+
+        if [ ! -d /usr/sbin/leigod ]; then
+            echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满或者雷神服务器挂了!"
+            echo "请登录 OpenWrt 路由器后台: 系统-软件包 查看当前可用空间诊断."
+        else
+            echo "[INFO] Lean IPKG 插件版 leigod-acc 已成功安装!"
+        fi
     fi
 }
 
