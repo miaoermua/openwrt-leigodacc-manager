@@ -384,15 +384,15 @@ install_lean_ipkg_version() {
 
     echo "[INFO] 所有依赖包已安装！"
 
-    arch=`opkg print-architecture | awk '/^arch/{print $2}'`
+    arch=`opkg print-architecture | awk 'END {print $2}'`
 
     if opkg list | grep -q "leigod-acc"; then
         echo "[INFO] 软件源中检测到 leigod-acc 插件，正在安装..."
         opkg install leigod-acc luci-app-leigod-acc luci-i18n-leigod-acc-zh-cn
         echo "[INFO] Lean 版本 leigod-acc 安装成功！"
     else
-        echo "[INFO] 在线软件源中没有找到 leigod-acc 包，将下载并安装相应的插件"
-        
+        echo "[INFO] 在线软件源中没有找到 leigod-acc 包，将下载并安装相应的插件。"
+
         case "$arch" in
             "aarch64_cortex-a53"|"aarch64_cortex-a53+crypto")
                 url="https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/leigod-acc_1.3.0.30-1_aarch64_cortex-a53.ipk"
