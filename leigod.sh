@@ -49,13 +49,14 @@ if ! grep -qi -E "OpenWrt|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; then
     echo "Your system is not supported!"
     echo "[INFO]你的系统可能无法运行 OpenWrt Leigodacc 插件!"
     echo "当前系统环境并非常见或标准的 OpenWrt，可能是论坛版本修改发行版文件导致无法识别"
-    echo "可能无法正常支持全部依赖，部分组件可能无法正常启用导致加速问题"
-    echo "你可以无视风险继续安装，5s 后进入管理器菜单，详情参考管理器发布于博客信息"
+    echo "可能导致无法正常支持全部依赖，部分组件可能无法正常启用导致加速问题"
+    echo "你可以无视风险继续安装，5s 后将进入管理器菜单，详情参考管理器发布于博客信息"
+    echo
     sleep 5
 fi
 
 leigod_menu() {
-    echo ""
+    echo
     echo "============================="
     echo "OpenWrt LeigodAcc Manager"
     echo
