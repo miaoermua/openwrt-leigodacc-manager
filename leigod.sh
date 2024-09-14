@@ -428,11 +428,11 @@ install_lean_ipkg_version() {
 
         echo "[INFO] 正在下载 leigod-acc 包: $url"
         echo
-        wget -P /tmp "$url"
-        wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-app-leigod-acc_1-3_all.ipk"
-        wget -P /tmp "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk"
+        wget -P /tmp/upload "$url"
+        wget -P /tmp/upload "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-app-leigod-acc_1-3_all.ipk"
+        wget -P /tmp/upload "https://mirror.ghproxy.com/https://github.com/miaoermua/openwrt-leigodacc-manager/releases/download/v1.3/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk"
 
-        opkg install /tmp/leigod-acc_*.ipk /tmp/luci-app-leigod-acc_1-3_all.ipk /tmp/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk
+        opkg install /tmp/upload/leigod-acc_*.ipk /tmp/upload/luci-app-leigod-acc_1-3_all.ipk /tmp/upload/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk
         echo
 
         if [ ! -d /usr/sbin/leigod ]; then
