@@ -444,6 +444,21 @@ install_lean_ipkg_version() {
     fi
 }
 
+check_logs() {
+    if ! opkg list-installed | grep -q "^tc-full"; then
+        return 0
+    fi
+
+    if grep -q "exec tc command failed" /tmp/acc/acc-gw.log-* && grep -q "No such file or directory" /tmp/acc/acc-gw.log-*; then
+        echo "[ERROR] 检测到 'exec tc command failed' 错误，可能是由于 tc-full 组件问题"
+        echo "建议更换固件，详情预览博客"
+        echo
+        return 1
+    fi
+}
+
+check_logs
+
 help() {
     echo ""
     echo "BLOG: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
