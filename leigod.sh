@@ -453,7 +453,7 @@ check_logs() {
         echo "[ERROR] 检测到 'exec tc command failed' 错误，可能是软件源或者固件提供的 tc-full 组件问题"
         echo "建议更换固件，详情预览博客"
         echo
-        return 1
+        sleep 5
     fi
 }
 
