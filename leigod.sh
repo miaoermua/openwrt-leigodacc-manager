@@ -135,6 +135,26 @@ install_leigodacc() {
         fi
     done
 
+    if ! opkg list-installed | grep -q 'luci-app-upnp'; then
+        echo "[INFO] luci-app-upnp 未安装，正在安装..."
+        opkg install luci-app-upnp
+    fi
+
+    if [ -f /etc/config/upnpd ]; then
+        echo "[INFO] 正在启用 UPnP..."
+        uci set upnpd.config.enabled='1'
+        uci commit upnpd
+
+        /etc/init.d/miniupnpd start
+        /etc/init.d/miniupnpd enable
+
+        echo "[INFO] UPnP 已启用并运行"
+        echo "[INFO] 安装成功后可以在雷神加速器 APP 发现并绑定设备"
+    else
+        echo "[ERROR] UPnP 配置文件不存在，安装可能失败，请检查固件!"
+        exit 1
+    fi
+
     echo "[INFO] 下面是雷神官方提供的脚本,打印内容偏长如遇到问题请提供输出内容(截图/文字)反馈到群里."
     
     cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
