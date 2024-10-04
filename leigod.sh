@@ -461,6 +461,7 @@ install_lean_ipkg_version() {
         echo "请登录 OpenWrt 路由器后台: 系统-软件包 查看当前可用空间诊断."
     else
          echo "[INFO] Lean IPKG 插件版 leigod-acc 已成功安装!"
+        fi
     fi
     
     if ! opkg list-installed | grep -q 'luci-app-upnp'; then
