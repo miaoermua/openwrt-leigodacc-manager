@@ -93,8 +93,10 @@ install_leigodacc() {
 
     if [ -f /etc/catwrt_release ]; then
         if ! grep -q -E "catwrt|repo.miaoer.xyz" /etc/opkg/distfeeds.conf && ! ip a | grep -q -E "192\.168\.[0-9]+\.[0-9]+|10\.[0-9]+\.[0-9]+\.[0-9]+|172\.1[6-9]\.[0-9]+\.[0-9]+|172\.2[0-9]+\.[0-9]+|172\.3[0-1]\.[0-9]+\.[0-9]+"; then
-            echo "[ERROR] 请先配置 CatWrt 软件源"
+            echo "[ERROR] 检测到 CatWrt，请先配置 CatWrt 软件源，请使用:"
             echo "Cattools - Apply_repo"
+            echo
+            echo "在正确启用软件源后即可获取雷神加速器插件完整支持(可能)"
             cattools
             return
         fi
@@ -102,7 +104,7 @@ install_leigodacc() {
         echo "cat /etc/opkg/customfeeds.conf" && cat /etc/opkg/customfeeds.conf
         echo "cat /etc/opkg/distfeeds.conf" && cat /etc/opkg/distfeeds.conf
         if [ ! -f /usr/bin/cattools ]; then
-            echo "[AD] 你还没有安装 Cattools 以方便安装 LeigodAcc 中依赖 Kmod 的组件"
+            echo "[AD] 你还没有安装 Cattools 以方便安装 LeigodAcc 中依赖部分缺少的组件"
             echo "请查看 https://github.com/miaoermua/cattools 或使用"
             echo "推荐 CatWrt 最新版 https://www.miaoer.xyz/network/catwrt"
             echo ""
@@ -117,7 +119,7 @@ install_leigodacc() {
     [ -e /var/lock/opkg.lock ] && rm /var/lock/opkg.lock
     opkg update
 
-    for pkg in libpcap iptables kmod-ipt-nat iptables-mod-tproxy ipset; do
+    for pkg in libpcap iptables kmod-ipt-nat iptables-mod-tproxy kmod-ipt-ipset ipset; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[INFO] 正在安装必备组件 $pkg"
             opkg install $pkg
@@ -126,7 +128,7 @@ install_leigodacc() {
         fi
     done
 
-    for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full kmod-ipt-ipset conntrack; do
+    for pkg in kmod-tun kmod-ipt-tproxy kmod-netem tc-full conntrack; do
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[INFO] 尝试安装 $pkg"
             opkg install $pkg
@@ -149,7 +151,7 @@ install_leigodacc() {
         /etc/init.d/miniupnpd enable
 
         echo "[INFO] UPnP 已启用并运行"
-        echo "[INFO] 安装成功后可以在雷神加速器 APP 发现并绑定设备"
+        echo "安装成功后可以在雷神加速器 APP 发现并绑定设备"
     else
         echo "[ERROR] UPnP 配置文件不存在，安装可能失败，请检查固件!"
         exit 1
@@ -270,7 +272,6 @@ uninstall_leigodacc() {
             ;;
     esac
 
-    # 检查是否安装了 leigod-acc 包
     if opkg list_installed | grep -q "leigod-acc"; then
         echo "[INFO] leigod-acc 通过 opkg 安装，正在卸载"
         /etc/init.d/acc disable
@@ -455,12 +456,31 @@ install_lean_ipkg_version() {
         opkg install /tmp/upload/leigod-acc_*.ipk /tmp/upload/luci-app-leigod-acc_1-3_all.ipk /tmp/upload/luci-i18n-leigod-acc-zh-cn_1-3_all.ipk
         echo
 
-        if [ ! -d /usr/sbin/leigod ]; then
-            echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满或者雷神服务器挂了!"
-            echo "请登录 OpenWrt 路由器后台: 系统-软件包 查看当前可用空间诊断."
-        else
-            echo "[INFO] Lean IPKG 插件版 leigod-acc 已成功安装!"
-        fi
+    if [ ! -d /usr/sbin/leigod ]; then
+        echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满或者雷神服务器挂了!"
+        echo "请登录 OpenWrt 路由器后台: 系统-软件包 查看当前可用空间诊断."
+    else
+         echo "[INFO] Lean IPKG 插件版 leigod-acc 已成功安装!"
+    fi
+    
+    if ! opkg list-installed | grep -q 'luci-app-upnp'; then
+        echo "[INFO] luci-app-upnp 未安装，正在安装..."
+        opkg install luci-app-upnp
+    fi
+
+    if [ -f /etc/config/upnpd ]; then
+        echo "[INFO] 正在启用 UPnP..."
+        uci set upnpd.config.enabled='1'
+        uci commit upnpd
+
+        /etc/init.d/miniupnpd start
+        /etc/init.d/miniupnpd enable
+
+        echo "[INFO] UPnP 已启用并运行"
+        echo "[INFO] 安装成功后可以在雷神加速器 APP 发现并绑定设备"
+    else
+        echo "[ERROR] UPnP 配置文件不存在，安装可能失败，请检查固件!"
+        exit 1
     fi
 }
 
@@ -470,8 +490,7 @@ check_logs() {
     fi
 
     if grep -q "exec tc command failed" /tmp/acc/acc-gw.log-* && grep -q "No such file or directory" /tmp/acc/acc-gw.log-*; then
-        echo "[ERROR] 检测到 'exec tc command failed' 错误，可能是软件源或者固件提供的 tc-full 组件问题"
-        echo "建议更换固件，详情预览博客"
+        echo "[ERROR] 检测到插件中的 tc-full 组件出现了 'exec tc command failed' 错误，可能是软件源或者固件提供的 tc-full 组件问题"
         echo
         sleep 5
     fi
