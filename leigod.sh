@@ -152,6 +152,7 @@ install_leigodacc() {
 
         echo "[INFO] UPnP 已启用并运行"
         echo "安装成功后可以在雷神加速器 APP 发现并绑定设备"
+        echo
     else
         echo "[ERROR] UPnP 配置文件不存在，安装可能失败，请检查固件!"
         exit 1
