@@ -562,7 +562,7 @@ check_openclash_mode() {
 }
 
 check_openclash_mode
-
+check_acceleration
 check_logs
 
 help() {
