@@ -64,10 +64,10 @@ leigod_menu() {
     echo "2. 卸载"
     echo "3. 重装/更新"
     echo "4. 禁用/启用 雷神服务"
-    echo "5. 切换运行模式 (TUN/Tproxy)"
+    echo "5. 切换运行模式   (TUN/Tproxy)"
     echo "6. 安装兼容性依赖 (主机优化)"
-    echo "7. 禁用 IPv6 (手机优化)"
-    echo "8. 切换为 Lean IPKG 版"
+    echo "7. 禁用/启用 IPv6 (手机优化)"
+    echo "8. 安装 Lean IPKG 版"
     echo "9. 反馈/帮助"
     echo "0. 退出"
     echo "============================="
@@ -498,13 +498,78 @@ check_logs() {
     fi
 }
 
+check_acceleration() {
+    log_file="/tmp/acc/acc-gw.log-*.log"
+
+    if [ ! -f "$log_file" ]; then
+        return 1
+    fi
+
+    if ! grep -q "S5 UDP" "$log_file"; then
+        return 1
+    fi
+
+    last_s5_udp_time=$(grep -Eo '^[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}' "$log_file" | tail -1)
+
+    if [ -z "$last_s5_udp_time" ]; then
+        return 1
+    fi
+
+    current_time=$(date +%s)
+    log_time=$(date -d "$last_s5_udp_time" +%s)
+    time_diff=$((current_time - log_time))
+
+    if [ "$time_diff" -gt 20 ]; then
+        echo "[INFO] 检测到 UDP 被成功代理，加速成功"
+    fi
+}
+
+check_openclash_mode() {
+    if ! pgrep -f "openclash" > /dev/null 2>&1; then
+        echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与加速器冲突"
+        return 0
+    fi
+
+    config_dir="/etc/openclash"
+    config_files=$(ls "$config_dir"/*.yaml 2>/dev/null)
+
+    if [ -z "$config_files" ]; then
+        return 0
+    fi
+
+    for config_file in $config_files; do
+        mode=$(grep -E "^mode:" "$config_file" | awk '{print $2}')
+        enhanced_mode=$(grep -E "^ *enhanced-mode:" "$config_file" | cut -d':' -f2 | xargs)
+
+        if [ -z "$mode" ] || [ -z "$enhanced_mode" ]; then
+            continue
+        fi
+
+        if [ "$mode" = "rule" ] && [ "$enhanced_mode" = "redir-host" ];then
+            if grep -q "^tun:" "$config_file"; then
+                echo "[WARN] OpenClash 运行在 Redir-Host 但不是兼容模式(Tproxy)"
+                echo "[WARN] 你需要调整 OpenClash 的运行模式为 ‘兼容’，请移除 TUN 配置以避免加速器冲突。"
+                echo
+                echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与加速器冲突"
+            fi
+        else
+            echo "[WARN] OpenClash 运行在 Fake-IP 未处于兼容模式"
+            echo "[WARN] 你需要调整 OpenClash 的运行模式为 ‘兼容’，请移除 Fake-IP 配置以避免加速器冲突"
+            echo
+            echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与加速器冲突"
+        fi
+    done
+}
+
+check_openclash_mode
+
 check_logs
 
 help() {
     echo ""
     echo "BLOG: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
     echo "BUG 反馈请加群: 632342113"
-    echo "Tip: LeigodAcc 特指雷神加速器，leigod-acc 特指 Lean 版雷神插件"
+    echo "[Tip] LeigodAcc 特指雷神加速器，leigod-acc 特指 Lean 版雷神插件"
     echo ""
     echo "HELP："
     echo "1. 安装：安装 LeigodAcc"
@@ -521,7 +586,6 @@ help() {
     sleep 3
 }
 
-# 主程序
 while true; do
     leigod_menu
     read choice
@@ -561,4 +625,3 @@ while true; do
             ;;
     esac
 done
-
