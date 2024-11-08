@@ -106,7 +106,7 @@ install_leigodacc() {
         if [ ! -f /usr/bin/cattools ]; then
             echo "[AD] 你还没有安装 Cattools 以方便安装 LeigodAcc 中依赖部分缺少的组件"
             echo "请查看 https://github.com/miaoermua/cattools 或使用"
-            echo "推荐 CatWrt 最新版 https://www.miaoer.xyz/network/catwrt"
+            echo "推荐 CatWrt 最新版 https://www.miaoer.net/network/catwrt"
             echo ""
         fi
     fi
@@ -249,7 +249,7 @@ install_compatibility_dependencies() {
         if ! opkg list_installed | grep -q "$pkg"; then
             echo "[ERROR] 缺少包: $pkg"
             echo "Tip: 你可以到 immoralwrt 官网构建固件并勾选对应的组件替换掉当前系统,或者使用 CatWrt.v24.9 支持 LeigodAcc 全部依赖."
-            echo "https://www.miaoer.xyz/posts/network/catwrt"
+            echo "https://www.miaoer.net/posts/network/catwrt"
             echo
         fi
     done
@@ -412,7 +412,7 @@ install_lean_ipkg_version() {
         echo "你的设备暂不支持 Lean 版 IPKG 插件，尝试使用第一方带有依赖的 CatWrt 来安装 IPKG 版本吧，或者使用管理器中的普通安装选项"
         echo "访问以下链接获取 mt7621 & amd64(x86_64) 版本"
         echo
-        echo "https://www.miaoer.xyz/posts/network/catwrt"
+        echo "https://www.miaoer.net/posts/network/catwrt"
         sleep 5
         return 1
     fi
@@ -575,7 +575,7 @@ check_logs
 
 help() {
     echo ""
-    echo "BLOG: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager"
+    echo "BLOG: https://www.miaoer.net/posts/blog/openwrt-leigodacc-manager"
     echo "BUG 反馈请加群: 632342113"
     echo "[Tip] LeigodAcc 特指雷神加速器，leigod-acc 特指 Lean 版雷神插件"
     echo ""
