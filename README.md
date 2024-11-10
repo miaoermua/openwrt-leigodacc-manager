@@ -2,7 +2,7 @@
 
 基于 shell 脚本的雷神加速器插件管理器，适用于 OpenWrt 系统
 
-博客: https://www.miaoer.xyz/posts/blog/openwrt-leigodacc-manager
+博客: https://www.miaoer.net/posts/blog/openwrt-leigodacc-manager
 
 支持第一方 QWRT/CatWrt/LEDE、及第三方 OpenWrt 如 ImmoraliWrt/iStoreOS 安装雷神加速器插件
 
