@@ -54,14 +54,6 @@ Cattools - Apply_repo
 
 <br>
 
-**不支持当前 OpenWrt** 是防止有的所谓的牛炸天的论坛固件修改用于识别 OpenWrt 的关键文件 /etc/openwrt_release
-
-```sh
-sed -i 's/Oprt/OpenWrt/g' /etc/openwrt_release
-sed -i 's/KWrt/OpenWrt/g' /etc/openwrt_release
-# 将当前固件如上 Oprt KWrt 名字修改为 OpenWrt，请按照你的文件修改，修改后因为固件不支持的问题本插件无法提供技术支持
-```
-
 本插件可能无法在 **firewall4(nftables)** 环境下运行
 
 ## 组件
