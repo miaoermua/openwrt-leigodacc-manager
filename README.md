@@ -4,6 +4,8 @@
 
 博客: https://www.miaoer.net/posts/blog/openwrt-leigodacc-manager
 
+扩展内容(通用): https://www.miaoer.net/posts/blog/leigod-acc-router-plugin
+
 支持第一方 QWRT/CatWrt/LEDE、及第三方 OpenWrt 如 ImmoraliWrt/iStoreOS 安装雷神加速器插件
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
@@ -55,6 +57,8 @@ Cattools - Apply_repo
 <br>
 
 本插件可能无法在 **firewall4(nftables)** 环境下运行
+
+关于网络结构差异导致的无法连接已安装插件的路由器设备，可以参考 [扩展内容](https://www.miaoer.net/posts/blog/leigod-acc-router-plugin#%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E8%AE%BE%E5%A4%87)。
 
 ## 组件
 
