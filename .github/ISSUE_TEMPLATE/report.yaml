@@ -14,13 +14,12 @@ body:
     id: leigodacc-manager
     attributes:
       label: "是否使用了 openwrt-leigodacc-manager 进行修正"
-      description: "如果使用了 [openwrt-leigodacc-manager](https://github.com/miaoermua/openwrt-leigodacc-manager)，请勾选并在问题描述中描述你开启了管理器中的哪些设置。"
-    options:
-      - label: "是"
-      - label: "否"
+      description: "如果使用了 [openwrt-leigodacc-manager](https://github.com/miaoermua/openwrt-leigodacc-manager)，请勾选并提供操作了哪些内容。"
+      options:
+        - label: "是"
+        - label: "否"
     validations:
       required: true
-
 
   - type: dropdown
     id: issue-type
