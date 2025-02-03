@@ -5,21 +5,22 @@ body:
   - type: input
     id: openwrt-repo
     attributes:
-      label: "OpenWrt 源码仓库"
+      label: "OpenWrt 源码"
       description: "请提供您使用的 OpenWrt 源码仓库的链接或版本信息。"
     validations:
       required: true
 
-  - type: checkboxes
+  - type: radio
     id: leigodacc-manager
     attributes:
       label: "是否使用了 openwrt-leigodacc-manager 进行修正"
-      description: "如果使用了 [openwrt-leigodacc-manager](https://github.com/miaoermua/openwrt-leigodacc-manager)，请勾选并提供相关配置或修改的详细信息。"
-      options:
-        - label: "是"
-        - label: "否"
+      description: "如果使用了 [openwrt-leigodacc-manager](https://github.com/miaoermua/openwrt-leigodacc-manager)，请勾选并在问题描述中描述你开启了管理器中的哪些设置。"
+    options:
+      - label: "是"
+      - label: "否"
     validations:
       required: true
+
 
   - type: dropdown
     id: issue-type
@@ -29,6 +30,7 @@ body:
       options:
         - "游戏规则"
         - "LuCI 插件"
+        - "管理器"
         - "其他"
     validations:
       required: true
@@ -39,8 +41,8 @@ body:
       label: "问题描述"
       description: |
         请详细描述您遇到的问题，包括但不限于以下内容：
-        1. **网络拓扑**：请提供您的网络大致拓扑结构（例如：路由器、交换机、客户端设备的连接方式）。
-        2. **其他插件启用情况**：请列出您当前启用的其他插件或服务，并说明它们是否可能与游戏加速器插件产生冲突。
+        1. **网络拓扑**：请提供您的网络大致拓扑结构（例如：OpenWrt设备、无线路由器、客户端设备的连接方式）。
+        2. **其他插件启用情况**：请列出您当前启用的其他插件或服务，方便我们检查对 Leigod 的冲突。
         3. **错误日志**：如果有任何错误日志或系统日志，请一并提供。
         4. **复现步骤**：请详细描述问题的复现步骤，以便我们能够更好地理解和重现问题。
       placeholder: "请详细描述问题..."
