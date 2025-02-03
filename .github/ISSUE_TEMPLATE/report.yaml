@@ -10,7 +10,7 @@ body:
     validations:
       required: true
 
-  - type: radio
+  - type: checkboxes
     id: leigodacc-manager
     attributes:
       label: "是否使用了 openwrt-leigodacc-manager 进行修正"
