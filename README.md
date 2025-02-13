@@ -45,6 +45,13 @@ Collected errors:
 
 <br>
 
+**tc-full 出现 'exec tc command failed' 错误**
+
+可能是组件源码本身有问题，或者 Leigod 干掉了，请自行重装或测试，目前并没有稳定复现的方法。
+
+
+<br>
+
 [Cattools](https://github.com/miaoermua/cattools) 是 [CatWrt](https://github.com/miaoermua/CatWrt) 专属工具箱可以实现 **软件源配置**，CatWrt 必须启用后才能安装组件。
 
 ```shell
