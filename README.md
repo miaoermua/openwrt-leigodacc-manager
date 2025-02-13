@@ -45,7 +45,7 @@ Collected errors:
 
 <br>
 
-**tc-full 出现 'exec tc command failed' 错误**
+tc-full 出现 **'exec tc command failed'**错误
 
 可能是组件源码本身有问题，或者 Leigod 干掉了，请自行重装或测试，目前并没有稳定复现的方法。
 
