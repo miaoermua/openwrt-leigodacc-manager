@@ -6,6 +6,8 @@
 
 扩展内容(通用): https://www.miaoer.net/posts/blog/leigod-acc-router-plugin
 
+---
+
 支持第一方 QWRT/CatWrt/LEDE、及第三方 OpenWrt 如 ImmoraliWrt/iStoreOS 安装雷神加速器插件
 
 - [x] 支持第三方 OpenWrt 安装雷神加速器插件
