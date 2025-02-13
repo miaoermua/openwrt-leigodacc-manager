@@ -45,7 +45,7 @@ if [ -d /userdisk/appdata ]; then
 fi
 
 
-if ! grep -qi -E "OpenWrt|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; then
+if ! grep -qi -E "OpenWrt|LEDE|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; then
     echo "Your system is not supported!"
     echo "[INFO]你的系统可能无法运行 OpenWrt Leigodacc 插件!"
     echo "当前系统环境并非常见或标准的 OpenWrt，可能是论坛版本修改发行版文件导致无法识别"
@@ -282,7 +282,7 @@ uninstall_leigodacc() {
         rm -rf /usr/lib/lua/luci/view/leigod
         rm -rf /usr/sbin/leigod
         rm -rf /tmp/luci-*
-        echo "[INFO] LeigodAcc 卸载成功"
+        echo "[INFO] leigod-acc 卸载成功"
     else
         rm /etc/config/accelerator
         /etc/init.d/acc disable
@@ -501,6 +501,8 @@ check_logs() {
 
     if grep -q "exec tc command failed" /tmp/acc/acc-gw.log-* && grep -q "No such file or directory" /tmp/acc/acc-gw.log-*; then
         echo "[ERROR] 检测到插件中的 tc-full 组件出现了 'exec tc command failed' 错误，可能是软件源或者固件提供的 tc-full 组件问题"
+        echo "可能导致无法加速的问题，由于实装 tc-full 的用户过少，请自行测试加速问题或手动重装 tc-full 组件"
+        echo "opkg update && opkg remove tc-full && opkg install tc-full"
         echo
         sleep 5
     fi
