@@ -2,6 +2,11 @@
 
 基于 shell 脚本的雷神加速器插件管理器，适用于 OpenWrt 系统
 
+[![Stars](https://m3-markdown-badges.vercel.app/stars/3/3/miaoermua/openwrt-leigodacc-manager)](https://github.com/miaoermua/openwrt-leigodacc-manager)
+[![Issues](https://m3-markdown-badges.vercel.app/issues/1/2/miaoermua/openwrt-leigodacc-manager)](https://github.com/miaoermua/openwrt-leigodacc-manager/issues)
+[![Support](https://ziadoua.github.io/m3-Markdown-Badges/badges/Sponsor/sponsor1.svg)](https://www.miaoer.net/sponsor)
+[![COPYING](https://ziadoua.github.io/m3-Markdown-Badges/badges/LicenceGPLv2/licencegplv23.svg)](https://github.com/miaoermua/openwrt-leigodacc-manager/blob/main/LICENSE)
+
 博客: https://www.miaoer.net/posts/blog/openwrt-leigodacc-manager
 
 扩展内容(通用): https://www.miaoer.net/posts/blog/leigod-acc-router-plugin
