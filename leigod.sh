@@ -571,9 +571,32 @@ check_openclash_mode() {
     done
 }
 
+check_bypass_gateway() {
+    lan_gateway=$(uci get network.lan.gateway 2>/dev/null)
+    lan_ipaddr=$(uci get network.lan.ipaddr 2>/dev/null)
+    
+    lan_network=$(echo "$lan_ipaddr" | awk -F. '{print $1"."$2"."$3}')
+    gateway_network=$(echo "$lan_gateway" | awk -F. '{print $1"."$2"."$3}')
+
+    if [ -n "$lan_gateway" ] && [ "$lan_gateway" != "0.0.0.0" ] && [ "$lan_gateway" != "$lan_ipaddr" ] && [ "$lan_network" = "$gateway_network" ]; then
+        echo "[Tip] 检测到旁路网关配置:"
+        echo "当前路由器IP: $lan_ipaddr"
+        echo "配置的网关: $lan_gateway"
+        echo
+        echo "注意: 您正在使用旁路网关模式，需要特别注意以下事项:"
+        echo "如果是单臂路由(网关不互指):"
+        echo "需要在加速设备上配置安装加速器插件的网关&路由器地址"
+        echo "如果是双软路由(网关互指):"
+        echo "仅需要关闭主路由上的 UPnP 功能"
+        echo
+        sleep 5
+    fi
+}
+
 check_openclash_mode
 check_acceleration
 check_logs
+check_bypass_gateway
 
 help() {
     echo ""
