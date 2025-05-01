@@ -11,6 +11,8 @@
 
 扩展内容(通用): https://www.miaoer.net/posts/blog/leigod-acc-router-plugin
 
+相关项目：https://github.com/miaoermua/luci-app-leigod-acc
+
 ---
 
 支持第一方 QWRT/CatWrt/LEDE、及第三方 OpenWrt 如 ImmoraliWrt/iStoreOS 安装雷神加速器插件
