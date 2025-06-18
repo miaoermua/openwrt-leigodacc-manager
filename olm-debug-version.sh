@@ -18,7 +18,7 @@ if [ -e /etc/asus_release ]; then
         echo
         sleep 5
         cd /tmp || { echo "[ERROR] 无法切换到 /tmp 目录"; exit 1; }
-        sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
+        sh -c "$(curl -fsSL http://119.3.40.126/router_plugin_new/plugin_install.sh)"
 
     fi
     exit 0
@@ -39,7 +39,7 @@ if [ -d /userdisk/appdata ]; then
         echo "[INFO] 以下内容均与 OpenWrt 管理器作者无关，本人并无小米路由器 Debug!"
         echo
         cd /tmp || { echo "[ERROR] 无法切换到 /tmp 目录"; exit 1; }
-        sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
+        sh -c "$(curl -fsSL http://119.3.40.126/router_plugin_new/plugin_install.sh)"
         exit 0
     fi
 fi
@@ -160,7 +160,7 @@ install_leigodacc() {
 
     echo "[INFO] 下面是雷神官方提供的脚本,打印内容偏长如遇到问题请提供输出内容(截图/文字)反馈到群里."
     
-    cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin/plugin_install.sh)"
+    cd /tmp && sh -c "$(curl -fsSL http://119.3.40.126/router_plugin_new/plugin_install.sh)"
 
     if [ ! -d /usr/sbin/leigod ]; then
         echo "[ERROR] 检测到 LeigodAcc 未安装，有可能是设备存储空间已满或者雷神服务器挂了!"
