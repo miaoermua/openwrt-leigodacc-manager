@@ -1,0 +1,42 @@
+<%+header%>
+<script type="text/javascript">
+    function fetchLog(reverse) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var logContent = xhr.responseText.trim();
+                var lines = logContent ? logContent.split("\n") : [];
+
+                if (reverse === 'true') {
+                    lines = lines.reverse();
+                }
+
+                document.getElementById("log").innerText = lines.join("\n");
+            }
+        };
+        xhr.open("GET", "<%=url('admin/services/acc/get_log')%>", true);
+        xhr.send();
+    }
+
+    window.onload = function() {
+        // 默认加载倒序
+        fetchLog('true');
+        setInterval(function() {
+            fetchLog(document.getElementById("order").value);
+        }, 1000);
+    };
+</script>
+
+<h2><a id="content" name="content">Logs</a></h2>
+<div class="cbi-map">
+    <div class="cbi-section-node">
+        <select id="order" onchange="fetchLog(this.value)">
+            <option value="false">正序</option>
+            <option value="true" selected>倒序</option>
+        </select>
+        <pre id="log" style="background:#fff;color:#000;padding:10px;white-space:pre-wrap;word-wrap:break-word;">
+[INFO] 正在加载日志，请稍候...
+        </pre>
+    </div>
+</div>
+<%+footer%>
