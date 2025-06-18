@@ -593,6 +593,17 @@ check_bypass_gateway() {
     fi
 }
 
+notice() {
+    echo
+    echo "update: 25-06-18-17-13-00"
+    echo "============================="
+    echo "公告"
+    echo "该版本仅对接的是内测版 ARM64/aarch64 的 OpenWrt 第一&第三方固件"
+    echo "请勿用于生产环境，遇到 BUG 请及时在群里报告。"
+    echo "============================="
+    sleep 5
+}
+
 check_openclash_mode
 check_acceleration
 check_logs
@@ -618,16 +629,6 @@ help() {
     echo "0. 退出：退出管理器"
     echo ""
     sleep 3
-}
-
-notice() {
-    echo ""
-    echo "============================="
-    echo "公告"
-    echo "该版本仅对接的是内测版 ARM64/aarch64 的 OpenWrt 第一&第三方固件"
-    echo "请勿用于生产环境，遇到 BUG 请及时在群里报告。"
-    echo "============================="
-    sleep 5
 }
 
 while true; do
