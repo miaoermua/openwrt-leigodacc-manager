@@ -56,7 +56,7 @@ fi
 
 if [ -x /usr/sbin/fw4 ]; then
     echo ""
-    echo "[WARN] 当前系统使用的是 fw4/nft"
+    echo "[WARN] 当前系统使用的是 fw4/nft，你的系统可能不支持运行"
     echo "LeigodAcc 目前仅兼容 fw3/ipt"
     echo "如果在使用中出现问题可以考虑更换 QWRT/LEDE/CatWrt 支持雷神的固件。"
     echo "https://www.miaoer.net/posts/network/catwrt"
