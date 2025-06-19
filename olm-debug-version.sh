@@ -19,7 +19,6 @@ if [ -e /etc/asus_release ]; then
         sleep 5
         cd /tmp || { echo "[ERROR] 无法切换到 /tmp 目录"; exit 1; }
         sh -c "$(curl -fsSL http://119.3.40.126/router_plugin_new/plugin_install.sh)"
-
     fi
     exit 0
 fi
@@ -53,6 +52,16 @@ if ! grep -qi -E "OpenWrt|LEDE|QWRT|ImmortalWrt|iStoreOS" /etc/openwrt_release; 
     echo "你可以无视风险继续安装，5s 后将进入管理器菜单，详情参考管理器发布于博客信息"
     echo
     sleep 5
+fi
+
+if [ -x /usr/sbin/fw4 ]; then
+    echo ""
+    echo "[WARN] 当前系统使用的是 fw4/nft，你的系统可能不支持运行"
+    echo "LeigodAcc 目前仅兼容 fw3/ipt"
+    echo "如果在使用中出现问题可以考虑更换 QWRT/LEDE/CatWrt 支持雷神的固件。"
+    echo "https://www.miaoer.net/posts/network/catwrt"
+    echo ""
+    sleep 3
 fi
 
 leigod_menu() {
