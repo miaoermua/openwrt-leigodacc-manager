@@ -41,6 +41,7 @@ sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-m
 <p align="center">
 <img src="https://fastly.jsdelivr.net/gh/miaoermua/static@main/images/sponsor-leigod.webp">
 </p>
+
 ---
 
 ## 已知问题
