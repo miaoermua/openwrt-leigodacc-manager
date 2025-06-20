@@ -34,10 +34,13 @@ sh -c "$(curl -fsSL https://fastly.jsdelivr.net/gh/miaoermua/openwrt-leigodacc-m
 
 > 此方法安装的不受 opkg 包管理器管理，无法通过 opkg 卸载雷神插件，IPKG Lean 版正在推进中 ✨ 点亮小星星可以吗
 
-该方法基于雷神加速器官方教程编写，管理程序开源不涉及商业竞争版权由 ©️ 雷神（武汉）网络技术有限公司 所有
+该方法基于雷神加速器官方教程编写，不涉及商业及版权由 雷神（武汉）网络技术有限公司 所有
 
 使用喵二专属雷神加速器口令 `miaoer` 可获得 50 小时不可暂停体验时长，搭配 OpenWrt 端可实现 6 端加速 PC 兑换: 雷神加速器 - 右上角更多 - CDK/口令兑换 - 口令兑换时长输入 `miaoer` 兑换
 
+<p align="center">
+<img src="https://fastly.jsdelivr.net/gh/miaoermua/static@main/images/sponsor-leigod.webp">
+</p>
 ---
 
 ## 已知问题
