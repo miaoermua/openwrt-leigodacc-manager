@@ -163,7 +163,7 @@ install_leigodacc() {
         echo "安装成功后可以在雷神加速器 APP 发现并绑定设备"
         echo
     else
-        echo "[ERROR] UPnP 配置文件不存在，安装可能失败，请检查固件!"
+        echo "[ERROR] UPnP 配置不存在，安装可能失败，请检查固件!"
         exit 1
     fi
 
@@ -303,7 +303,7 @@ uninstall_leigodacc() {
         rm -rf /usr/sbin/leigod
         rm /usr/lib/lua/luci/i18n/acc.zh-cn.lmo
         rm -rf /tmp/luci-*
-        echo "[INFO] LeigodAcc 卸载成功"
+        echo "[INFO] leigod-acc 卸载成功"
     fi
 }
 
@@ -496,9 +496,10 @@ install_lean_ipkg_version() {
         /etc/init.d/miniupnpd enable
 
         echo "[INFO] UPnP 已启用并运行"
-        echo "[INFO] 安装成功后可以在雷神加速器 APP 发现并绑定设备"
+        echo "安装成功后可以在雷神加速器 APP 发现并绑定设备"
+        echo
     else
-        echo "[ERROR] UPnP 配置文件不存在，安装可能失败，请检查固件!"
+        echo "[ERROR] UPnP 配置不存在，安装可能失败，请检查固件是否存在问题!"
         exit 1
     fi
 }
@@ -566,16 +567,23 @@ check_openclash_mode() {
 
         if [ "$mode" = "rule" ] && [ "$enhanced_mode" = "redir-host" ];then
             if grep -q "^tun:" "$config_file"; then
-                echo "[WARN] OpenClash 运行在 Redir-Host 但不是兼容模式(Tproxy)"
-                echo "[WARN] 你需要调整 OpenClash 的运行模式为 ‘兼容’，请移除 TUN 配置以避免加速器冲突。"
+                echo "[WARN] 运行模式可能存在冲突!"
+                echo "========================="
+                echo "OpenClash 运行在 Redir-Host 未处于兼容模式(Tproxy)"
+                echo "你需要调整 OpenClash 的运行模式为 ‘兼容’，请移除 TUN 配置以避免 leigod-acc 冲突。"
                 echo
-                echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与加速器冲突"
+                echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与 Leigod-Acc 冲突!"
             fi
         else
-            echo "[WARN] OpenClash 运行在 Fake-IP 未处于兼容模式"
-            echo "[WARN] 你需要调整 OpenClash 的运行模式为 ‘兼容’，请移除 Fake-IP 配置以避免加速器冲突"
+            echo "[WARN] 运行模式冲突!"
+            echo "=================="
+            echo "检查到 OpenClash 运行在 Fake-IP 未处于 Redir-Host 兼容模式(Tproxy)"
+            echo "需要调整 OpenClash 的运行模式为 ‘兼容’，请移除 Fake-IP 配置以避免 leigod-acc 冲突!"
             echo
-            echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与加速器冲突"
+            echo "OC > 插件设置 > 模式设置 > 切换页面到 Redir-Host 模式"
+            echo
+            echo "[Tip] 当你 OpenClash 为兼容模式(Tproxy),Leigod 需要切换为 TUN 模式以避免与 Leigod-Acc 冲突!"
+            sleep 5
         fi
     done
 }
@@ -610,7 +618,6 @@ check_bypass_gateway
 help() {
     echo ""
     echo "BLOG: https://www.miaoer.net/posts/blog/openwrt-leigodacc-manager"
-    echo "BUG 反馈请加群: 632342113"
     echo "[Tip] LeigodAcc 特指雷神加速器，leigod-acc 特指 Lean 版雷神插件"
     echo ""
     echo "HELP："
